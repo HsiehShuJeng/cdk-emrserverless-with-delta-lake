@@ -17,30 +17,29 @@ const project = new AwsCdkConstructLibrary({
     announce: true,
     twitter: 'fantasticHsieh',
   },
-
   cdkVersion: '2.27.0',
+  constructsVersion: '10.1.25',
+  cdkDependenciesAsDeps: true,
   defaultReleaseBranch: 'main',
   name: 'cdk-emrserverless-quickdemo',
   repositoryUrl: 'https://github.com/HsiehShuJeng/cdk-emrserverless-quickdemo.git',
   projectType: ProjectType.LIB,
-
-  cdkDependencies: [
-    'aws-cdk-lib',
-  ],
   cdkAssert: true,
   cdkVersionPinning: false, // see https://www.matthewbonig.com/2021/04/06/automating-construct-publishing/
   deps: [
-    'constructs@^10.1.25'
-  ],
-  peerDeps: [
     'aws-cdk-lib',
-    'constructs'
+    'constructs@^10.0.5',
   ],
   devDeps: [
     'aws-cdk-lib',
-    'constructs',
+    'constructs@^10.0.5',
+    '@types/prettier@2.6.0', // for detail, see https://stackoverflow.com/questions/72222305/aws-cdk-2-0-init-app-fails-to-build-with-prettier-issues-which-is-from-jest-sna
     'esbuild',
     'source-map-support',
+  ],
+  peerDeps: [
+    'aws-cdk-lib',
+    'constructs@^10.0.5',
   ],
   tsconfig: { include: ['src/**/*.ts', 'src/**.*.py'], compilerOptions: {} },
 
