@@ -128,9 +128,16 @@ public readonly entity: CfnStudio;
 
 ### EmrStudioServiceRole <a name="EmrStudioServiceRole" id="cdk-emrserverless-quickdemo.EmrStudioServiceRole"></a>
 
-A default service role for an EMR Studio.
+Creates a default service role for an EMR Studio.
 
-> [https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-service-role.html](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-service-role.html)
+For detail, please refer to [Create an EMR Studio service role](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-service-role.html).
+
+```ts
+const workSpaceBucket = new WorkSpaceBucket(this, 'WorkSpace');
+const emrStudioServiceRole = new EmrStudioServiceRole(this, 'Service', {
+      workSpaceBucket: workSpaceBucket
+});
+```
 
 #### Initializers <a name="Initializers" id="cdk-emrserverless-quickdemo.EmrStudioServiceRole.Initializer"></a>
 
@@ -227,7 +234,7 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#cdk-emrserverless-quickdemo.EmrStudioServiceRole.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#cdk-emrserverless-quickdemo.EmrStudioServiceRole.property.roleEntity">roleEntity</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | *No description.* |
+| <code><a href="#cdk-emrserverless-quickdemo.EmrStudioServiceRole.property.roleEntity">roleEntity</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The representative of the default service role for EMR Studio. |
 
 ---
 
@@ -250,6 +257,8 @@ public readonly roleEntity: Role;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.Role
+
+The representative of the default service role for EMR Studio.
 
 ---
 
@@ -452,10 +461,11 @@ public readonly engineSecurityGroupId: string;
 ```
 
 - *Type:* string
+- *Default:* a security group created by `EmrStudioEngineSecurityGroup`.
 
 The ID of the Amazon EMR Studio Engine security group.
 
-The Engine security group allows inbound network traffic from the Workspace security group, and it must be in the same VPC specified by VpcId .
+The Engine security group allows inbound network traffic from the Workspace security group, and it must be in the same VPC specified by VpcId.
 
 ---
 
@@ -537,6 +547,7 @@ public readonly workSpaceSecurityGroupId: string;
 ```
 
 - *Type:* string
+- *Default:* a security group created by `EmrStudioWorkspaceSecurityGroup`.
 
 The ID of the security group used by the workspace.
 
