@@ -137,7 +137,7 @@ A default service role for an EMR Studio.
 ```typescript
 import { EmrStudioServiceRole } from 'cdk-emrserverless-quickdemo'
 
-new EmrStudioServiceRole(scope: Construct, name: string, props?: EmrStudioServiceRoleProps)
+new EmrStudioServiceRole(scope: Construct, name: string, props: EmrStudioServiceRoleProps)
 ```
 
 | **Name** | **Type** | **Description** |
@@ -160,7 +160,7 @@ new EmrStudioServiceRole(scope: Construct, name: string, props?: EmrStudioServic
 
 ---
 
-##### `props`<sup>Optional</sup> <a name="props" id="cdk-emrserverless-quickdemo.EmrStudioServiceRole.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="cdk-emrserverless-quickdemo.EmrStudioServiceRole.Initializer.parameter.props"></a>
 
 - *Type:* <a href="#cdk-emrserverless-quickdemo.EmrStudioServiceRoleProps">EmrStudioServiceRoleProps</a>
 
@@ -398,7 +398,8 @@ const emrStudioProps: EmrStudioProps = { ... }
 | <code><a href="#cdk-emrserverless-quickdemo.EmrStudioProps.property.authMode">authMode</a></code> | <code><a href="#cdk-emrserverless-quickdemo.StudioAuthMode">StudioAuthMode</a></code> | Specifies whether the Studio authenticates users using AWS SSO or IAM. |
 | <code><a href="#cdk-emrserverless-quickdemo.EmrStudioProps.property.description">description</a></code> | <code>string</code> | A detailed description of the Amazon EMR Studio. |
 | <code><a href="#cdk-emrserverless-quickdemo.EmrStudioProps.property.engineSecurityGroupId">engineSecurityGroupId</a></code> | <code>string</code> | The ID of the Amazon EMR Studio Engine security group. |
-| <code><a href="#cdk-emrserverless-quickdemo.EmrStudioProps.property.serviceRoleArn">serviceRoleArn</a></code> | <code>string</code> | The custom service role for the EMR Studio. |
+| <code><a href="#cdk-emrserverless-quickdemo.EmrStudioProps.property.serviceRoleArn">serviceRoleArn</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#cdk-emrserverless-quickdemo.EmrStudioProps.property.serviceRoleName">serviceRoleName</a></code> | <code>string</code> | A name for the service role of an EMR Studio. |
 | <code><a href="#cdk-emrserverless-quickdemo.EmrStudioProps.property.studioName">studioName</a></code> | <code>string</code> | A descriptive name for the Amazon EMR Studio. |
 | <code><a href="#cdk-emrserverless-quickdemo.EmrStudioProps.property.userRoleArn">userRoleArn</a></code> | <code>string</code> | The custom user role for the EMR Studio when authentication is AWS SSO. |
 | <code><a href="#cdk-emrserverless-quickdemo.EmrStudioProps.property.vpcId">vpcId</a></code> | <code>string</code> | Used by the EMR Studio. |
@@ -465,11 +466,25 @@ public readonly serviceRoleArn: string;
 ```
 
 - *Type:* string
-- *Default:* established by the construct, EmrStudioServiceRole.
 
-The custom service role for the EMR Studio.
+---
 
-> [https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-service-role.html](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-service-role.html)
+##### `serviceRoleName`<sup>Optional</sup> <a name="serviceRoleName" id="cdk-emrserverless-quickdemo.EmrStudioProps.property.serviceRoleName"></a>
+
+```typescript
+public readonly serviceRoleName: string;
+```
+
+- *Type:* string
+- *Default:* 'emr-studio-service-role'
+
+A name for the service role of an EMR Studio.
+
+For valid values, see the RoleName parameter for the CreateRole action in the IAM API Reference.
+
+IMPORTANT: If you specify a name, you cannot perform updates that require replacement of this resource. You can perform updates that require no or some interruption. If you must replace the resource, specify a new name.
+
+If you specify a name, you must specify the CAPABILITY_NAMED_IAM value to acknowledge your template's capabilities. For more information, see Acknowledging IAM Resources in AWS CloudFormation Templates.
 
 ---
 
@@ -541,7 +556,20 @@ const emrStudioServiceRoleProps: EmrStudioServiceRoleProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#cdk-emrserverless-quickdemo.EmrStudioServiceRoleProps.property.workSpaceBucket">workSpaceBucket</a></code> | <code><a href="#cdk-emrserverless-quickdemo.WorkSpaceBucket">WorkSpaceBucket</a></code> | The custom construct as the workspace S3 bucket. |
 | <code><a href="#cdk-emrserverless-quickdemo.EmrStudioServiceRoleProps.property.roleName">roleName</a></code> | <code>string</code> | A name for the service role of an EMR Studio. |
+
+---
+
+##### `workSpaceBucket`<sup>Required</sup> <a name="workSpaceBucket" id="cdk-emrserverless-quickdemo.EmrStudioServiceRoleProps.property.workSpaceBucket"></a>
+
+```typescript
+public readonly workSpaceBucket: WorkSpaceBucket;
+```
+
+- *Type:* <a href="#cdk-emrserverless-quickdemo.WorkSpaceBucket">WorkSpaceBucket</a>
+
+The custom construct as the workspace S3 bucket.
 
 ---
 

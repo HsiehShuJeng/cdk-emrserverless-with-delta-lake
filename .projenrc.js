@@ -1,4 +1,4 @@
-const { AwsCdkConstructLibrary, NpmAccess, ProjectType } = require('projen');
+const { AwsCdkConstructLibrary, DependenciesUpgradeMechanism, NpmAccess, ProjectType } = require('projen');
 const project = new AwsCdkConstructLibrary({
   author: 'scott.hsieh',
   authorName: 'Shu-Jeng Hsieh',
@@ -48,11 +48,11 @@ const project = new AwsCdkConstructLibrary({
 
   eslint: true,
   projenUpgradeSecret: 'PROJEN_UPGRADE_SECRET',
-  autoApproveOptions: {
-    secret: 'GITHUB_TOKEN',
-    allowedUsernames: ['HsiehShuJeng'],
-  },
-  depsUpgradeAutoMerge: true,
+  projenUpgradeAutoMerge: true,
+  depsUpgrade: DependenciesUpgradeMechanism.dependabot({
+    autoMerge: true,
+    ignoreProjen: false,
+  }),
 
   // publish to npm
   releaseToNpm: true,
