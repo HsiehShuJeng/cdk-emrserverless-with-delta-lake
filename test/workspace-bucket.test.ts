@@ -1,6 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
-import { WorkSpaceBucket } from '../src/workspace-bucket';
+import { WorkSpaceBucket } from '../src/buckets';
 
 describe('Test WorkSpaceBucket', () => {
   test('WorkSpaceBucket', () => {

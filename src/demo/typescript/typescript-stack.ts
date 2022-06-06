@@ -1,15 +1,13 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { EmrStudio } from '../../emr-studio';
-import { WorkSpaceBucket } from '../../workspace-bucket';
+import { EmrServerless } from '../../emrserverless';
 
 class TypescriptStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
-    const workspaceBucket = new WorkSpaceBucket(this, 'EmrStudio');
-    new EmrStudio(this, 'QuickDemo', {
-      workSpaceBucket: workspaceBucket,
+    new EmrServerless(this, 'EmrServerless', {
+      subnetIds: ['subnet-a4bfe38c', 'subnet-278b3050', 'subnet-3571a36c']
     });
   }
 }

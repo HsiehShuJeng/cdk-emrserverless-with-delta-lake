@@ -7,10 +7,10 @@ import { Construct } from 'constructs';
  */
 export interface EmrStudioEngineSecurityGroupProps {
   /**
-                               * The VPC in which to create the engine security group for EMR Studio.
-                               *
-                               * @default - default VPC in an AWS account.
-                               */
+                                 * The VPC in which to create the engine security group for EMR Studio.
+                                 *
+                                 * @default - default VPC in an AWS account.
+                                 */
   readonly vpc: ec2.IVpc;
 }
 /**
@@ -27,13 +27,13 @@ export interface EmrStudioEngineSecurityGroupProps {
  */
 export class EmrStudioEngineSecurityGroup extends Construct {
   /**
-                               * The representative of the security group as the EMR Studio engine security group.
-                               */
+                                 * The representative of the security group as the EMR Studio engine security group.
+                                 */
   public readonly entity: ec2.SecurityGroup;
   constructor(scope: Construct, name: string, props: EmrStudioEngineSecurityGroupProps) {
     super(scope, name);
     this.entity = new ec2.SecurityGroup(this, 'SecurityGroup', {
-      securityGroupName: `DefaultEngineSecurityGroup-${cdk.Aws.ACCOUNT_ID}`,
+      securityGroupName: `DefaultEngineSecurityGroup-${cdk.Aws.ACCOUNT_ID}-tmp`,
       vpc: props.vpc,
       allowAllOutbound: false,
       disableInlineRules: true,
@@ -49,10 +49,10 @@ export class EmrStudioEngineSecurityGroup extends Construct {
  */
 export interface EmrStudioWorkspaceSecurityGroupProps {
   /**
-                               * The VPC in which to create workspace security group for EMR Studio.
-                               *
-                               * @default - default VPC in an AWS account.
-                               */
+                                 * The VPC in which to create workspace security group for EMR Studio.
+                                 *
+                                 * @default - default VPC in an AWS account.
+                                 */
   readonly vpc: ec2.IVpc;
 }
 
@@ -70,13 +70,13 @@ export interface EmrStudioWorkspaceSecurityGroupProps {
  */
 export class EmrStudioWorkspaceSecurityGroup extends Construct {
   /**
-                               * The representative of the security group as the EMR Studio workspace security group.
-                               */
+                                 * The representative of the security group as the EMR Studio workspace security group.
+                                 */
   public readonly entity: ec2.SecurityGroup;
   constructor(scope: Construct, name: string, props: EmrStudioWorkspaceSecurityGroupProps) {
     super(scope, name);
     this.entity = new ec2.SecurityGroup(this, 'SecurityGroup', {
-      securityGroupName: `DefaultWorkspaceSecurityGroupGit-${cdk.Aws.ACCOUNT_ID}`,
+      securityGroupName: `DefaultWorkspaceSecurityGroupGit-${cdk.Aws.ACCOUNT_ID}-tmp`,
       vpc: props.vpc,
       allowAllOutbound: false,
       disableInlineRules: true,

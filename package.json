@@ -1,5 +1,5 @@
 {
-  "name": "cdk-emrserverless-quickdemo",
+  "name": "cdk-emrserverless-with-delta-lake",
   "description": "A construct for the quick demo of EMR Serverless.",
   "repository": {
     "type": "git",
@@ -68,6 +68,7 @@
   "keywords": [
     "aws",
     "cdk",
+    "delta-lake",
     "emr",
     "emr-serverless",
     "emr-studio",
