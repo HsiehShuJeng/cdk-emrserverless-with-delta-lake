@@ -74,9 +74,11 @@
   },
   "keywords": [
     "aws",
+    "aws-service-catalog",
     "cdk",
     "delta-lake",
     "emr",
+    "emr-notebooks",
     "emr-serverless",
     "emr-studio",
     "scott.hsieh",

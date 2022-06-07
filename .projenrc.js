@@ -14,6 +14,9 @@ const project = new projen.awscdk.AwsCdkConstructLibrary({
     'emr-serverless',
     'serverless',
     'scott.hsieh',
+    'emr-notebooks',
+    'emr-studio',
+    'aws-service-catalog',
   ],
   catalog: {
     announce: true,
@@ -21,6 +24,7 @@ const project = new projen.awscdk.AwsCdkConstructLibrary({
   },
   cdkVersion: '2.27.0',
   constructsVersion: '10.1.25',
+  majorVersion: 2,
   defaultReleaseBranch: 'main',
   name: 'cdk-emrserverless-with-delta-lake',
   repositoryUrl: 'https://github.com/HsiehShuJeng/cdk-emrserverless-with-delta-lake.git',
@@ -42,7 +46,6 @@ const project = new projen.awscdk.AwsCdkConstructLibrary({
     'constructs@^10.0.5',
   ],
   tsconfig: { include: ['src/**/*.ts', 'src/**.*.py'], compilerOptions: {} },
-  majorVersion: 2,
 
   npmAccess: projen.javascript.NpmAccess.PUBLIC,
 
