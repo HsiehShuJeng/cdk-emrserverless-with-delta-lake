@@ -108,19 +108,17 @@ project.npmignore.exclude(...pythonDemoExclustions);
 project.gitignore.exclude(...pythonDemoExclustions);
 project.npmignore.exclude(...javaDemoExclustions);
 project.gitignore.exclude(...javaDemoExclustions);
-
 const githubWorkflowRoot = './.github/workflows';
 const releaseWorkflow = project.tryFindFile(
-  `${githubWorkflowRoot}/release.yml`
+  `${githubWorkflowRoot}/release.yml`,
 );
 releaseWorkflow.addOverride('jobs.release.env', {
   AWS_REGION: 'ap-northeast-1',
   AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}',
   AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}',
 });
-releaseWorkflow.addOverride('jobs.release.steps.3', {
-  name: 'release',
-  run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen release'
-});
-
+// releaseWorkflow.addOverride('jobs.release.steps.3', {
+//   name: 'release',
+//   run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen release',
+// });
 project.synth();
