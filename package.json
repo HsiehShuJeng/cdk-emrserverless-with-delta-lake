@@ -3,7 +3,7 @@
   "description": "A construct for the quick demo of EMR Serverless.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/HsiehShuJeng/cdk-emrserverless-quickdemo.git"
+    "url": "https://github.com/HsiehShuJeng/cdk-emrserverless-with-delta-lake.git"
   },
   "scripts": {
     "clobber": "npx projen clobber",
@@ -31,15 +31,15 @@
   },
   "devDependencies": {
     "@aws-cdk/assert": "^2.27.0",
-    "@types/jest": "^28.1.0",
+    "@types/jest": "^28.1.1",
     "@types/node": "^10.17.0",
     "@types/prettier": "2.6.0",
-    "@typescript-eslint/eslint-plugin": "^5.27.0",
-    "@typescript-eslint/parser": "^5.27.0",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
     "aws-cdk-lib": "^2.27.0",
     "constructs": "10.1.25",
     "esbuild": "^0.14.42",
-    "eslint": "^8.16.0",
+    "eslint": "^8.17.0",
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-import-resolver-typescript": "^2.7.1",
     "eslint-plugin-import": "^2.26.0",
@@ -47,14 +47,14 @@
     "jest-junit": "^12",
     "jsii": "^1.59.0",
     "jsii-diff": "^1.59.0",
-    "jsii-docgen": "^7.0.26",
+    "jsii-docgen": "^7.0.29",
     "jsii-pacmak": "^1.59.0",
     "json-schema": "^0.4.0",
     "projen": "^0.17.95",
     "source-map-support": "^0.5.21",
     "standard-version": "^9",
     "ts-jest": "^28.0.4",
-    "typescript": "^4.7.2"
+    "typescript": "^4.7.3"
   },
   "peerDependencies": {
     "aws-cdk-lib": "^2.27.0",
@@ -126,16 +126,16 @@
         "package": "io.github.hsiehshujeng.cdk.emrserverless.quickdemo",
         "maven": {
           "groupId": "io.github.hsiehshujeng",
-          "artifactId": "cdk-emrserverless-quickdemo"
+          "artifactId": "cdk-emrserverless-quickdemo-with-delta-lake"
         }
       },
       "python": {
-        "distName": "cdk_emrserverless_quickdemo",
-        "module": "cdk_emrserverless_quickdemo"
+        "distName": "cdk_emrserverless_with_delta_lake",
+        "module": "cdk_emrserverless_with_delta_lake"
       },
       "dotnet": {
         "namespace": "ScottHsieh.Cdk",
-        "packageId": "Emrserverless.Quickdemo"
+        "packageId": "Emrserverless.With.Delta.Lake"
       }
     },
     "tsc": {

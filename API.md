@@ -580,6 +580,7 @@ const emrStudioProps: EmrStudioProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.subnetIds">subnetIds</a></code> | <code>string[]</code> | The subnet IDs for the EMR studio. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.workSpaceBucket">workSpaceBucket</a></code> | <code><a href="#cdk-emrserverless-with-delta-lake.WorkSpaceBucket">WorkSpaceBucket</a></code> | The custom construct as the workspace S3 bucket. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.authMode">authMode</a></code> | <code><a href="#cdk-emrserverless-with-delta-lake.StudioAuthMode">StudioAuthMode</a></code> | Specifies whether the Studio authenticates users using AWS SSO or IAM. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.description">description</a></code> | <code>string</code> | A detailed description of the Amazon EMR Studio. |
@@ -590,6 +591,20 @@ const emrStudioProps: EmrStudioProps = { ... }
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.userRoleArn">userRoleArn</a></code> | <code>string</code> | The custom user role for the EMR Studio when authentication is AWS SSO. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.vpcId">vpcId</a></code> | <code>string</code> | Used by the EMR Studio. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.workSpaceSecurityGroupId">workSpaceSecurityGroupId</a></code> | <code>string</code> | The ID of the security group used by the workspace. |
+
+---
+
+##### `subnetIds`<sup>Required</sup> <a name="subnetIds" id="cdk-emrserverless-with-delta-lake.EmrStudioProps.property.subnetIds"></a>
+
+```typescript
+public readonly subnetIds: string[];
+```
+
+- *Type:* string[]
+
+The subnet IDs for the EMR studio.
+
+You can select the subnets from the default VPC in your AWS account.
 
 ---
 
