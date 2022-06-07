@@ -12,7 +12,7 @@ export interface EmrStudioDeveloperStackProps {
                                                    *
                                                    * @default - 'scott.hsieh'
                                                    */
-  providerName?: string;
+  readonly providerName?: string;
 }
 
 /**

@@ -27,6 +27,7 @@ They build the construct via [cdkv2](https://docs.aws.amazon.com/cdk/v2/guide/ho
 You might want to execute the following command.  
 ```sh
 PROFILE_NAME="scott.hsieh"
+# If you only have one credentials on your local machine, just ignore `--profile`, buddy.  
 cdk bootstrap aws://${AWS_ACCOUNT_ID}/${AWS_REGION} --profile ${PROFILE_NAME}
 ```  
 # Minimal content for deployment  
@@ -107,10 +108,13 @@ Promise me, darling, make advantage on the CloudFormation outputs.  All you need
    # upload script
    aws s3 cp delta-lake-demo.py s3://${SERVERLESS_BUCKET_NAME}/scripts/${DELTA_LAKE_SCRIPT_NAME}.py --profile ${PROFILE_NAME}
    # download jars and upload them
-   curl https://repo1.maven.org/maven2/io/delta/delta-core_2.12/1.2.0/delta-core_2.12-1.2.0.jar --output delta-core_2.12-1.2.0.jar
-   curl https://repo1.maven.org/maven2/io/delta/delta-storage/1.2.0/delta-storage-1.2.0.jar --output delta-storage-1.2.0.jar
-   aws s3 mv delta-core_2.12-1.2.0.jar s3://${SERVERLESS_BUCKET_NAME}/jars/delta-core_2.12-1.2.0.jar --profile ${PROFILE_NAME}
-   aws s3 mv delta-storage-1.2.0.jar s3://${SERVERLESS_BUCKET_NAME}/jars/delta-storage-1.2.0.jar --profile ${PROFILE_NAME}
+   DELTA_VERSION="1.2.0"
+   DELTA_LAKE_CORE="delta-core_2.12-${DELTA_VERSION}.jar"
+   DELTA_LAKE_STORAGE="delta-storage-${${DELTA_VERSION}}.jar"
+   curl https://repo1.maven.org/maven2/io/delta/delta-core_2.12/${DELTA_VERSION}/${DELTA_LAKE_CORE} --output ${DELTA_LAKE_CORE}
+   curl https://repo1.maven.org/maven2/io/delta/delta-storage/${DELTA_VERSION}/${DELTA_LAKE_STORAGE} --output ${DELTA_LAKE_STORAGE}
+   aws s3 mv ${DELTA_LAKE_CORE} s3://${SERVERLESS_BUCKET_NAME}/jars/${${DELTA_LAKE_CORE}} --profile ${PROFILE_NAME}
+   aws s3 mv ${DELTA_LAKE_STORAGE} s3://${SERVERLESS_BUCKET_NAME}/jars/${DELTA_LAKE_STORAGE} --profile ${PROFILE_NAME}
    ```  
 # Create an EMR Serverless app  
 Rememeber, you got so much information to copy and paste from the CloudFormation outputs.  

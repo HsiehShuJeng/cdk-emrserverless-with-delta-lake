@@ -36,7 +36,7 @@ export class WorkSpaceBucket extends Construct {
 /**
  * Properties for the EMR Serverless bucket.
  */
-export interface EmrServerlessProps {
+export interface EmrServerlessBucketProps {
   /**
              * The bucket name for EMR Serverless applications.
              *
@@ -60,7 +60,7 @@ export interface EmrServerlessProps {
  */
 export class EmrServerlessBucket extends Construct {
   public readonly bucketEntity: s3.Bucket;
-  constructor(scope: Construct, name: string, props?: EmrServerlessProps) {
+  constructor(scope: Construct, name: string, props?: EmrServerlessBucketProps) {
     super(scope, name);
     const removalPolicy = (props !== undefined) ? props.removalPolicy : cdk.RemovalPolicy.DESTROY;
     if (props !== undefined) {
