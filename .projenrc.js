@@ -117,8 +117,8 @@ releaseWorkflow.addOverride('jobs.release.env', {
   AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}',
   AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}',
 });
-// releaseWorkflow.addOverride('jobs.release.steps.3', {
-//   name: 'release',
-//   run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen release',
-// });
+releaseWorkflow.addOverride('jobs.release.steps.3', {
+  name: 'release',
+  run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen release',
+});
 project.synth();
