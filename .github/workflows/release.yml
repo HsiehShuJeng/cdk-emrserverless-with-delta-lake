@@ -31,7 +31,8 @@ jobs:
         run: yarn install --check-files --frozen-lockfile
       - name: release
         run: |-
-          source test/initialize.sh
+          export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query 'Account' | tr -d '"')
+          export CDK_DEFAULT_REGION=${AWS_REGION}
           npx projen release
       - name: Check for new commits
         id: git_remote

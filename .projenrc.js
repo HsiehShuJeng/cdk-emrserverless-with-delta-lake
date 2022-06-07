@@ -120,7 +120,7 @@ releaseWorkflow.addOverride('jobs.release.env', {
 });
 releaseWorkflow.addOverride('jobs.release.steps.3', {
   name: 'release',
-  run: 'source test/initialize.sh\nnpx projen release'
+  run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen release'
 });
 
 project.synth();
