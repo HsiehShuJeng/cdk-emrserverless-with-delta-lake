@@ -33,7 +33,7 @@ export class EmrStudioEngineSecurityGroup extends Construct {
   constructor(scope: Construct, name: string, props: EmrStudioEngineSecurityGroupProps) {
     super(scope, name);
     this.entity = new ec2.SecurityGroup(this, 'SecurityGroup', {
-      securityGroupName: `DefaultEngineSecurityGroup-${cdk.Aws.ACCOUNT_ID}-tmp`,
+      securityGroupName: `DefaultEngineSecurityGroup-${cdk.Aws.ACCOUNT_ID}`,
       vpc: props.vpc,
       allowAllOutbound: false,
       disableInlineRules: true,
@@ -76,7 +76,7 @@ export class EmrStudioWorkspaceSecurityGroup extends Construct {
   constructor(scope: Construct, name: string, props: EmrStudioWorkspaceSecurityGroupProps) {
     super(scope, name);
     this.entity = new ec2.SecurityGroup(this, 'SecurityGroup', {
-      securityGroupName: `DefaultWorkspaceSecurityGroupGit-${cdk.Aws.ACCOUNT_ID}-tmp`,
+      securityGroupName: `DefaultWorkspaceSecurityGroupGit-${cdk.Aws.ACCOUNT_ID}`,
       vpc: props.vpc,
       allowAllOutbound: false,
       disableInlineRules: true,

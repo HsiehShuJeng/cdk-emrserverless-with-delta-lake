@@ -2,6 +2,9 @@ import * as cdk from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as emr from 'aws-cdk-lib/aws-emr';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as logs from 'aws-cdk-lib/aws-logs';
+import * as cr from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
 import { WorkSpaceBucket } from './buckets';
 import { EmrStudioDeveloperStack } from './emr-studio-cluster-templates';
@@ -21,6 +24,9 @@ export enum StudioAuthMode {
   AWS_IAM = 'IAM'
 }
 
+/**
+ * Options for the EMR Studio, mainly for EMR Serverless applications.
+ */
 export interface EmrStudioProps {
   /**
                                                  * The custom construct as the workspace S3 bucket.
@@ -94,6 +100,21 @@ export interface EmrStudioProps {
   readonly userRoleArn?: string;
 }
 
+/**
+ * Creates an EMR Studio for EMR Serverless applications.
+ *
+ * The Studio is not only for EMR Serverless applications but also for launching an EMR cluster via a cluster template created in this constrcut to check out results transformed by EMR serverless applications.
+ *
+ * For what Studio can do further, please refer to [Amazon EMR Studio](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio.html).
+ *
+ * ```ts
+ * const workspaceBucket = new WorkSpaceBucket(this, 'EmrStudio');
+ * const emrStudio = new EmrStudio(this, '', {
+ *    workSpaceBucket: workspaceBucket,
+ *    subnetIds: ['subnet1', 'subnet2', 'subnet3']
+ * });
+ * ```
+ */
 export class EmrStudio extends Construct {
   public readonly entity: emr.CfnStudio;
   constructor(scope: Construct, name: string, props: EmrStudioProps) {
@@ -102,21 +123,32 @@ export class EmrStudio extends Construct {
     if (props.vpcId !== undefined) {
       console.log('`vpcId` is not set for the EmrStudio construct, therefore, the default VPC is chosen.');
     }
-
-    this.addProperTag(baseVpc);
     const workSpaceSecurityGroup = new EmrStudioWorkspaceSecurityGroup(this, 'Workspace', { vpc: baseVpc });
     const engineSecurityGroup = new EmrStudioEngineSecurityGroup(this, 'Engine', { vpc: baseVpc });
     workSpaceSecurityGroup.entity.connections.allowTo(engineSecurityGroup.entity, ec2.Port.tcp(18888), 'Allow traffic to any resources in the Engine security group for EMR Studio.');
     workSpaceSecurityGroup.entity.addEgressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(443), 'Allow traffic to the internet to link publicly hosted Git repositories to Workspaces.');
+    const subnetIds: Array<string> = props.subnetIds;
+
     this.addProperTag(workSpaceSecurityGroup);
     this.addProperTag(engineSecurityGroup);
-    const subnetIds: Array<string> = props.subnetIds;
-    subnetIds.forEach((subnetId, position) => {
-      const subnet = ec2.Subnet.fromSubnetId(this, `EmrStudioSubnet${position}`, subnetId);
-      this.addProperTag(subnet);
+    const taggingExpert = new EmrStudioTaggingExpert(this, 'TaggingExpert');
+    const lambdaInvoker = new cr.Provider(this, 'LambdaInvoker', {
+      onEventHandler: taggingExpert.functionEntity,
+      logRetention: logs.RetentionDays.THREE_MONTHS,
+    });
+    new cdk.CustomResource(this, 'TagVpcSubnetCr', {
+      serviceToken: lambdaInvoker.serviceToken,
+      resourceType: 'Custom::TagVpcSubnets',
+      properties: {
+        VpcId: baseVpc.vpcId,
+        SubnetIds: subnetIds.toString(),
+      },
     });
 
     const serviceRoleName = props.serviceRoleName ?? 'emr-studio-service-role';
+    if (props.serviceRoleName == undefined) {
+      console.log('`serviceRoleName` is set by default value: \'emr-studio-service-role\'');
+    }
     const emrStudioServiceRole = new EmrStudioServiceRole(this, 'Service', {
       workSpaceBucket: props.workSpaceBucket,
       roleName: serviceRoleName,
@@ -126,17 +158,16 @@ export class EmrStudio extends Construct {
     const workspaceSecurityGroupId = props.workSpaceSecurityGroupId ?? workSpaceSecurityGroup.entity.securityGroupId;
     const serviceRoleArn = (props.serviceRoleArn !== undefined) ? props.serviceRoleArn : emrStudioServiceRole!.roleEntity.roleArn;
 
+
     this.entity = new emr.CfnStudio(this, 'EmrStudio', {
       authMode: authMode,
       defaultS3Location: `s3://${props.workSpaceBucket.bucketEntity.bucketName}/`,
       engineSecurityGroupId: engineSecurityGroupId,
       name: props.studioName ?? 'emr-sutdio-quicklaunch',
       serviceRole: serviceRoleArn,
-      subnetIds: ['subnet-a4bfe38c', 'subnet-278b3050', 'subnet-3571a36c'],
+      subnetIds: subnetIds,
       vpcId: baseVpc.vpcId,
       workspaceSecurityGroupId: workspaceSecurityGroupId,
-
-      // the properties below are optional
       description: props.description ?? 'EMR Studio Quick Launch - by scott.hsieh',
       tags: [{
         key: 'Purpose',
@@ -165,6 +196,9 @@ export class EmrStudio extends Construct {
   };
 }
 
+/**
+ * Properties for defining the [service role](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-service-role.html) of an EMR Studio.
+ */
 export interface EmrStudioServiceRoleProps {
   /**
                                                  * The custom construct as the workspace S3 bucket.
@@ -441,5 +475,53 @@ export class EmrStudioServiceRole extends Construct {
       },
     });
     new cdk.CfnOutput(this, 'OEmrStudioServiceRoleArn', { value: this.roleEntity.roleArn, description: 'The ARN of the servcie role used by the EMR Studio for quick demo.' });
+  }
+}
+
+/**
+ * Creates a Lambda function for the custom resource which can add necessary tag onto the VPC and subnets for the EMR Studio during deployment.
+ *
+ * For detail on the tag, please refer to [How to create a service role for EMR Studio](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-service-role.html#emr-studio-service-role-instructions)
+ */
+export class EmrStudioTaggingExpert extends Construct {
+  /**
+   * The repesentative of the Lambda function for the custom resource which can add necessary tag onto the VPC and subnets for the EMR Studio during deployment.
+   */
+  public readonly functionEntity: lambda.Function;
+  constructor(scope: Construct, name: string) {
+    super(scope, name);
+    const lambdaRole = new iam.Role(this, 'Role', {
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+      description: 'An execution role for the Lambda function which tags specific resources for the EMR Studio.',
+      managedPolicies: [
+        iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
+        iam.ManagedPolicy.fromAwsManagedPolicyName('AWSXRayDaemonWriteAccess'),
+      ],
+      roleName: 'Tagging-Expert-Role',
+      inlinePolicies: {
+        LambdaForBranchPolicy: new iam.PolicyDocument({
+          assignSids: true,
+          statements: [new iam.PolicyStatement({
+            effect: iam.Effect.ALLOW,
+            actions: ['ec2:CreateTags', 'ec2:DeleteTags'],
+            resources: [`arn:${cdk.Aws.PARTITION}:ec2:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:vpc/*`,
+              `arn:${cdk.Aws.PARTITION}:ec2:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:subnet/*`],
+          })],
+        }),
+      },
+    });
+    this.functionEntity = new lambda.Function(this, 'Function', {
+      functionName: 'emr-studio-tagging-specific-resources',
+      description: 'Tags specific EC2 resources, i.e., the VPC and subnets for the EMR Studio.',
+      logRetention: logs.RetentionDays.THREE_MONTHS,
+      runtime: lambda.Runtime.PYTHON_3_9,
+      architecture: lambda.Architecture.ARM_64,
+      code: lambda.Code.fromInline('import json\r\nfrom typing import List\r\n\r\nimport boto3\r\nfrom botocore.exceptions import ClientError, ParamValidationError\r\n\r\n\r\ndef lambda_handler(event, context):\r\n    print(json.dumps(event, indent=4))\r\n    request_type = event["RequestType"]\r\n    props = event["ResourceProperties"]\r\n    vpc_id: str = props.get(\'VpcId\')\r\n    subnet_ids: List[str] = props.get(\'SubnetIds\').split(\',\')\r\n    resources_list = [vpc_id] + subnet_ids\r\n    ec2_client = boto3.client(\'ec2\')\r\n    if(request_type in [\'Create\', \'Update\']):\r\n        try:\r\n            response = ec2_client.create_tags(\r\n                Resources=resources_list,\r\n                Tags=[\r\n                    {\r\n                        \'Key\': \'for-use-with-amazon-emr-managed-policies\',\r\n                        \'Value\': \'true\'\r\n                    }\r\n                ]\r\n            )\r\n            metadata = response.get(\'ResponseMetadata\')\r\n            status_code = metadata.get(\'HTTPStatusCode\')\r\n            print(f\'HTTP status code: {status_code}\')\r\n            if status_code == 200:\r\n                resources = \',\'.join(resources_list)\r\n                tag_value = json.dumps({\r\n                    \'Key\': \'for-use-with-amazon-emr-managed-policies\',\r\n                    \'Value\': \'true\'\r\n                }, indent=4)\r\n                print(f\'{resources} has been added {tag_value}\')\r\n        except ClientError as e:\r\n            print(f\'Unexpected error: {e}\')\r\n        except ParamValidationError as e:\r\n            print(f\'Parameter validation error: {e}\')\r\n    if(request_type == \'Delete\'):\r\n        try:\r\n            response = ec2_client.delete_tags(\r\n                Resources=resources_list,\r\n                Tags=[\r\n                    {\r\n                        \'Key\': \'for-use-with-amazon-emr-managed-policies\',\r\n                        \'Value\': \'true\'\r\n                    }\r\n                ]\r\n            )\r\n            metadata = response.get(\'ResponseMetadata\')\r\n            status_code = metadata.get(\'HTTPStatusCode\')\r\n            print(f\'HTTP status code: {status_code}\')\r\n            if status_code == 200:\r\n                resources = \',\'.join(resources_list)\r\n                tag_value = json.dumps({\r\n                    \'Key\': \'for-use-with-amazon-emr-managed-policies\',\r\n                    \'Value\': \'true\'\r\n                }, indent=4)\r\n                print(f\'{resources} has been removed {tag_value}\')\r\n        except ClientError as e:\r\n            print(f\'Unexpected error: {e}\')\r\n        except ParamValidationError as e:\r\n            print(f\'Parameter validation error: {e}\')\r\n'),
+      handler: 'index.lambda_handler',
+      memorySize: 128,
+      role: lambdaRole,
+      timeout: cdk.Duration.seconds(20),
+      tracing: lambda.Tracing.ACTIVE,
+    });
   }
 }

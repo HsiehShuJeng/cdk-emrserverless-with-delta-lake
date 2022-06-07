@@ -1058,6 +1058,20 @@ public readonly bucketEntity: Bucket;
 
 ### EmrStudio <a name="EmrStudio" id="cdk-emrserverless-with-delta-lake.EmrStudio"></a>
 
+Creates an EMR Studio for EMR Serverless applications.
+
+The Studio is not only for EMR Serverless applications but also for launching an EMR cluster via a cluster template created in this constrcut to check out results transformed by EMR serverless applications.
+
+For what Studio can do further, please refer to [Amazon EMR Studio](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio.html).
+
+```ts
+const workspaceBucket = new WorkSpaceBucket(this, 'EmrStudio');
+const emrStudio = new EmrStudio(this, '', {
+    workSpaceBucket: workspaceBucket,
+    subnetIds: ['subnet1', 'subnet2', 'subnet3']
+});
+```
+
 #### Initializers <a name="Initializers" id="cdk-emrserverless-with-delta-lake.EmrStudio.Initializer"></a>
 
 ```typescript
@@ -1597,6 +1611,129 @@ public readonly roleEntity: Role;
 - *Type:* aws-cdk-lib.aws_iam.Role
 
 The representative of the default service role for EMR Studio.
+
+---
+
+
+### EmrStudioTaggingExpert <a name="EmrStudioTaggingExpert" id="cdk-emrserverless-with-delta-lake.EmrStudioTaggingExpert"></a>
+
+Creates a Lambda function for the custom resource which can add necessary tag onto the VPC and subnets for the EMR Studio during deployment.
+
+For detail on the tag, please refer to [How to create a service role for EMR Studio](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-service-role.html#emr-studio-service-role-instructions)
+
+#### Initializers <a name="Initializers" id="cdk-emrserverless-with-delta-lake.EmrStudioTaggingExpert.Initializer"></a>
+
+```typescript
+import { EmrStudioTaggingExpert } from 'cdk-emrserverless-with-delta-lake'
+
+new EmrStudioTaggingExpert(scope: Construct, name: string)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioTaggingExpert.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioTaggingExpert.Initializer.parameter.name">name</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="cdk-emrserverless-with-delta-lake.EmrStudioTaggingExpert.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+##### `name`<sup>Required</sup> <a name="name" id="cdk-emrserverless-with-delta-lake.EmrStudioTaggingExpert.Initializer.parameter.name"></a>
+
+- *Type:* string
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioTaggingExpert.toString">toString</a></code> | Returns a string representation of this construct. |
+
+---
+
+##### `toString` <a name="toString" id="cdk-emrserverless-with-delta-lake.EmrStudioTaggingExpert.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioTaggingExpert.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="cdk-emrserverless-with-delta-lake.EmrStudioTaggingExpert.isConstruct"></a>
+
+```typescript
+import { EmrStudioTaggingExpert } from 'cdk-emrserverless-with-delta-lake'
+
+EmrStudioTaggingExpert.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="cdk-emrserverless-with-delta-lake.EmrStudioTaggingExpert.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioTaggingExpert.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioTaggingExpert.property.functionEntity">functionEntity</a></code> | <code>aws-cdk-lib.aws_lambda.Function</code> | The repesentative of the Lambda function for the custom resource which can add necessary tag onto the VPC and subnets for the EMR Studio during deployment. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="cdk-emrserverless-with-delta-lake.EmrStudioTaggingExpert.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `functionEntity`<sup>Required</sup> <a name="functionEntity" id="cdk-emrserverless-with-delta-lake.EmrStudioTaggingExpert.property.functionEntity"></a>
+
+```typescript
+public readonly functionEntity: Function;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.Function
+
+The repesentative of the Lambda function for the custom resource which can add necessary tag onto the VPC and subnets for the EMR Studio during deployment.
 
 ---
 
@@ -2146,6 +2283,8 @@ The VPC in which to create the engine security group for EMR Studio.
 
 ### EmrStudioProps <a name="EmrStudioProps" id="cdk-emrserverless-with-delta-lake.EmrStudioProps"></a>
 
+Options for the EMR Studio, mainly for EMR Serverless applications.
+
 #### Initializer <a name="Initializer" id="cdk-emrserverless-with-delta-lake.EmrStudioProps.Initializer"></a>
 
 ```typescript
@@ -2324,6 +2463,8 @@ The ID of the security group used by the workspace.
 ---
 
 ### EmrStudioServiceRoleProps <a name="EmrStudioServiceRoleProps" id="cdk-emrserverless-with-delta-lake.EmrStudioServiceRoleProps"></a>
+
+Properties for defining the [service role](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-service-role.html) of an EMR Studio.
 
 #### Initializer <a name="Initializer" id="cdk-emrserverless-with-delta-lake.EmrStudioServiceRoleProps.Initializer"></a>
 
