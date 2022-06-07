@@ -1,30 +1,22 @@
 {
   "dependencies": [
     {
-      "name": "@aws-cdk/assert",
-      "version": "^2.27.0",
-      "type": "build"
-    },
-    {
       "name": "@types/jest",
       "type": "build"
     },
     {
       "name": "@types/node",
-      "version": "^10.17.0",
-      "type": "build"
-    },
-    {
-      "name": "@types/prettier",
-      "version": "2.6.0",
+      "version": "^14",
       "type": "build"
     },
     {
       "name": "@typescript-eslint/eslint-plugin",
+      "version": "^5",
       "type": "build"
     },
     {
       "name": "@typescript-eslint/parser",
+      "version": "^5",
       "type": "build"
     },
     {
@@ -37,16 +29,7 @@
       "type": "build"
     },
     {
-      "name": "constructs",
-      "version": "10.1.25",
-      "type": "build"
-    },
-    {
       "name": "esbuild",
-      "type": "build"
-    },
-    {
-      "name": "eslint",
       "type": "build"
     },
     {
@@ -62,12 +45,18 @@
       "type": "build"
     },
     {
-      "name": "jest",
+      "name": "eslint",
+      "version": "^8",
       "type": "build"
     },
     {
       "name": "jest-junit",
-      "version": "^12",
+      "version": "^13",
+      "type": "build"
+    },
+    {
+      "name": "jest",
+      "version": "^27",
       "type": "build"
     },
     {
@@ -91,8 +80,12 @@
       "type": "build"
     },
     {
+      "name": "npm-check-updates",
+      "version": "^12",
+      "type": "build"
+    },
+    {
       "name": "projen",
-      "version": "^0.17.95",
       "type": "build"
     },
     {
@@ -106,6 +99,7 @@
     },
     {
       "name": "ts-jest",
+      "version": "^27",
       "type": "build"
     },
     {
@@ -114,11 +108,7 @@
     },
     {
       "name": "aws-cdk-lib",
-      "type": "peer"
-    },
-    {
-      "name": "constructs",
-      "version": "^10.0.5",
+      "version": "^2.27.0",
       "type": "peer"
     },
     {

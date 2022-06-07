@@ -1,6 +1,6 @@
-const { AwsCdkConstructLibrary, DependenciesUpgradeMechanism, NpmAccess, ProjectType } = require('projen');
+const projen = require('projen');
 
-const project = new AwsCdkConstructLibrary({
+const project = new projen.awscdk.AwsCdkConstructLibrary({
     author: 'scott.hsieh',
     authorName: 'Shu-Jeng Hsieh',
     authorAddress: 'https://fantasticsie.medium.com/',
@@ -21,12 +21,10 @@ const project = new AwsCdkConstructLibrary({
     },
     cdkVersion: '2.27.0',
     constructsVersion: '10.1.25',
-    cdkDependenciesAsDeps: true,
     defaultReleaseBranch: 'main',
     name: 'cdk-emrserverless-with-delta-lake',
     repositoryUrl: 'https://github.com/HsiehShuJeng/cdk-emrserverless-with-delta-lake.git',
-    projectType: ProjectType.LIB,
-    cdkAssert: true,
+
     cdkVersionPinning: false, // see https://www.matthewbonig.com/2021/04/06/automating-construct-publishing/
     deps: [
         'aws-cdk-lib',
@@ -35,7 +33,7 @@ const project = new AwsCdkConstructLibrary({
     devDeps: [
         'aws-cdk-lib',
         'constructs@^10.0.5',
-        '@types/prettier@2.6.0', // for detail, see https://stackoverflow.com/questions/72222305/aws-cdk-2-0-init-app-fails-to-build-with-prettier-issues-which-is-from-jest-sna
+        // '@types/prettier@2.6.0', // for detail, see https://stackoverflow.com/questions/72222305/aws-cdk-2-0-init-app-fails-to-build-with-prettier-issues-which-is-from-jest-sna
         'esbuild',
         'source-map-support',
     ],
@@ -46,15 +44,12 @@ const project = new AwsCdkConstructLibrary({
     tsconfig: { include: ['src/**/*.ts', 'src/**.*.py'], compilerOptions: {} },
 
 
-    npmAccess: NpmAccess.PUBLIC,
+    npmAccess: projen.javascript.NpmAccess.PUBLIC,
 
     eslint: true,
     projenUpgradeSecret: 'PROJEN_UPGRADE_SECRET',
     projenUpgradeAutoMerge: true,
-    depsUpgrade: DependenciesUpgradeMechanism.dependabot({
-        autoMerge: true,
-        ignoreProjen: false,
-    }),
+    depsUpgrade: true,
 
     // publish to npm
     releaseToNpm: true,
