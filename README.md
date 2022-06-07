@@ -16,6 +16,7 @@ They build the construct via [cdkv2](https://docs.aws.amazon.com/cdk/v2/guide/ho
 * [Check the executing job](#check-the-executing-job)  
 * [Check results from an EMR notebook via cluster template](#check-results-from-an-emr-notebook-via-cluster-template)  
 * [Fun facts](#fun-facts)  
+* [Future work](#future-work)  
 
 # Requirements  
 1. Your current identity has the `AdministratorAccess` power.  
@@ -169,3 +170,8 @@ Access the EMR Studio via the URL from the CloudFormation outputs. It should loo
 4. Version inconsistency on Spark history. Possibly it can be ignored yet still made me wonder why the versions are different.  
    ![naughty inconsistency](./images/Spark%20history.png)  
 5. So far, I still haven't figured out how to make the s3a URI work. The s3 URI is fine while the serverless app will complain that it couldn't find proper credentials provider to read the s3a URI.  
+
+# Future work
+1. Custom resuorce for EMR Serverless
+2. Make the construct more flexible for users
+3. Compare Databricks Runtime and EMR Serverless.  
