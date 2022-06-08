@@ -1,5 +1,6 @@
 # cdk-emrserverless-with-delta-lake
-![high level architecture](./images/high%20level%20architecture.png)  
+![high level architecture](./images/high%20level%20architecture.png)   
+ 
 This constrcut builds an EMR studio, a cluster template for the EMR Studio, and an EMR Serverless application. 2 S3 buckets will be created, one is for the EMR Studio workspace and the other one is for EMR Serverless applications. Besides, the VPC and the subnets for the EMR Studio will be tagged `{"Key": "for-use-with-amazon-emr-managed-policies", "Value": "true"}` via a custom resource. This is necessary for the [service role](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-service-role.html#emr-studio-service-role-instructions) of EMR Studio.   
 This construct is for analysts, data engineers, and anyone who wants to know how to process **Delta Lake data** with EMR serverless.  
 ![cfn designer](./images/cfn-designer.png)  
