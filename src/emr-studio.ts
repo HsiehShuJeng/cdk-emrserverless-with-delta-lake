@@ -7,7 +7,7 @@ import * as logs from 'aws-cdk-lib/aws-logs';
 import * as cr from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
 import { WorkSpaceBucket } from './buckets';
-import { EmrStudioDeveloperStack } from './emr-studio-cluster-templates';
+import { EmrStudioDeveloperStack, EmrStudioDeveloperStackProps } from './emr-studio-cluster-templates';
 import { EmrStudioEngineSecurityGroup, EmrStudioWorkspaceSecurityGroup } from './emr-studio-sgs';
 
 /**
@@ -98,6 +98,12 @@ export interface EmrStudioProps {
                                                          * @link https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-user-permissions.html
                                                          */
   readonly userRoleArn?: string;
+  /**
+   * Options for which kind of identity will be associated with the Product of the Porfolio in AWS Service Catalog for EMR cluster templates.
+   *
+   * You can choose either an IAM group, IAM role, or IAM user. If you leave it empty, an IAM user named `Administrator` with the `AdministratorAccess` power needs to be created first.
+   */
+  readonly serviceCatalogProps?: EmrStudioDeveloperStackProps;
 }
 
 /**
@@ -179,7 +185,12 @@ export class EmrStudio extends Construct {
       }],
       userRole: (props.authMode == StudioAuthMode.AWS_SSO) ? props.userRoleArn : undefined,
     });
-    new EmrStudioDeveloperStack(this, 'ClusterTempalte');
+    new EmrStudioDeveloperStack(this, 'ClusterTempalte', {
+      providerName: props.serviceCatalogProps?.providerName,
+      group: props.serviceCatalogProps?.group,
+      user: props.serviceCatalogProps?.user,
+      role: props.serviceCatalogProps?.role,
+    });
 
     new cdk.CfnOutput(this, 'EmrStudioArn', { value: cdk.stringToCloudFormation(this.entity.getAtt('Arn')), description: 'The ARN of the EMR Studio' });
     new cdk.CfnOutput(this, 'EmrStudioId', { value: cdk.stringToCloudFormation(this.entity.getAtt('StudioId')), description: 'The ID of the Amazon EMR Studio.' });

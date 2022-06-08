@@ -1,5 +1,5 @@
 # cdk-emrserverless-with-delta-lake
-
+![high level architecture](./images/high%20level%20architecture.png)  
 This constrcut builds an EMR studio, a cluster template for the EMR Studio, and an EMR Serverless application. 2 S3 buckets will be created, one is for the EMR Studio workspace and the other one is for EMR Serverless applications. Besides, the VPC and the subnets for the EMR Studio will be tagged `{"Key": "for-use-with-amazon-emr-managed-policies", "Value": "true"}` via a custom resource. This is necessary for the [service role](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-service-role.html#emr-studio-service-role-instructions) of EMR Studio.   
 This construct is for analysts, data engineers, and anyone who wants to know how to process **Delta Lake data** with EMR serverless.  
 ![cfn designer](./images/cfn-designer.png)  
@@ -22,8 +22,9 @@ They build the construct via [cdkv2](https://docs.aws.amazon.com/cdk/v2/guide/ho
 1. Your current identity has the `AdministratorAccess` power.  
 2. [An IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started_create-admin-group.html) named `Administrator` with the `AdministratorAccess` power.  
     * This is related to the Portfolio of AWS Service Catalog created by the construct, which is required for [EMR cluster tempaltes](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-cluster-templates.html).  
-    * I'm still thinking whether I should leave it as a choice (in the construct) or create for you directly.  
+    * You can choose whatsoever identity you wish to associate with the Product in the Porfolio for creating an EMR cluster via cluster tempalte. Check `serviceCatalogProps` in the `EmrServerless` construct for detail, otherwise, the IAM user mentioned above will be chosen to set up with the Product.   
 3. Choose proper subnet (IDs) from the default VPC, other than which you can choose your destined VPC, for the `EmrServerless` construct.  
+   * You gotta check security issue yourself if you choose an alternative VPC. In this construct, the default VPC is set and for the quickiest deployment, you select proper subnets (IDs) from you default VPC and deploy it.  
 # Before deployment  
 You might want to execute the following command.  
 ```sh
@@ -36,7 +37,7 @@ cdk bootstrap aws://${AWS_ACCOUNT_ID}/${AWS_REGION} --profile ${PROFILE_NAME}
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { EmrServerless } from '../../emrserverless';
+import { EmrServerless } from 'cdk-emrserverless-with-delta-lake';
 
 class TypescriptStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -67,7 +68,7 @@ Promise me, darling, make advantage on the CloudFormation outputs.  All you need
     export SERVERLESS_BUCKET_NAME="${copy-paste-thank-you}"
     export DELTA_LAKE_SCRIPT_NAME="delta-lake-demo"
     ```  
-2. Copy partial NYC-taxi data into the EMR Serverless bucket.  
+2. **Copy partial NYC-taxi data into the EMR Serverless bucket.**    
    ```sh
    aws s3 cp s3://nyc-tlc/trip\ data/ s3://${SERVERLESS_BUCKET_NAME}/nyc-taxi/ --exclude "*" --include "yellow_tripdata_2021-*.parquet" --recursive --profile ${PROFILE_NAME}
    ```
@@ -99,9 +100,11 @@ Promise me, darling, make advantage on the CloudFormation outputs.  All you need
         # reads a Delta table and outputs to target S3 bucket
         spark.read.format("delta").load(url).show()
 
+        # The source for the second Delta table.
         base = spark.read.parquet(
             "s3://${SERVERLESS_BUCKET_NAME}/nyc-taxi/*.parquet")
 
+        # The sceond Delta table, oh ya.
         base.write.format("delta") \\
             .mode("overwrite") \\
             .save("s3://${SERVERLESS_BUCKET_NAME}/emr-serverless-spark/delta-lake/nyx-tlc-2021")
@@ -115,7 +118,7 @@ Promise me, darling, make advantage on the CloudFormation outputs.  All you need
    # download jars and upload them
    DELTA_VERSION="1.2.0"
    DELTA_LAKE_CORE="delta-core_2.12-${DELTA_VERSION}.jar"
-   DELTA_LAKE_STORAGE="delta-storage-${${DELTA_VERSION}}.jar"
+   DELTA_LAKE_STORAGE="delta-storage-${DELTA_VERSION}.jar"
    curl https://repo1.maven.org/maven2/io/delta/delta-core_2.12/${DELTA_VERSION}/${DELTA_LAKE_CORE} --output ${DELTA_LAKE_CORE}
    curl https://repo1.maven.org/maven2/io/delta/delta-storage/${DELTA_VERSION}/${DELTA_LAKE_STORAGE} --output ${DELTA_LAKE_STORAGE}
    aws s3 mv ${DELTA_LAKE_CORE} s3://${SERVERLESS_BUCKET_NAME}/jars/${${DELTA_LAKE_CORE}} --profile ${PROFILE_NAME}

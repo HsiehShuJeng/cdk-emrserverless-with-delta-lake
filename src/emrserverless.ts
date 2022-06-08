@@ -5,6 +5,7 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 import { WorkSpaceBucket, EmrServerlessBucket } from './buckets';
 import { EmrStudio } from './emr-studio';
+import { EmrStudioDeveloperStackProps } from './emr-studio-cluster-templates';
 
 
 export interface EmrServerlessProps {
@@ -13,6 +14,12 @@ export interface EmrServerlessProps {
      * You can select the subnets from the default VPC in your AWS account.
      */
   readonly subnetIds: Array<string>;
+  /**
+   * Options for which kind of identity will be associated with the Product of the Porfolio in AWS Service Catalog for EMR cluster templates.
+   *
+   * You can choose either an IAM group, IAM role, or IAM user. If you leave it empty, an IAM user named `Administrator` with the `AdministratorAccess` power needs to be created first.
+   */
+  readonly serviceCatalogProps?: EmrStudioDeveloperStackProps;
 }
 
 /**
@@ -32,6 +39,7 @@ export class EmrServerless extends Construct {
     new EmrStudio(this, 'QuickDemo', {
       workSpaceBucket: workspaceBucket,
       subnetIds: props.subnetIds,
+      serviceCatalogProps: props?.serviceCatalogProps,
     });
     new ServerlessJobRole(this, 'ExecutionJob', { emrServerlessBucket: emrServerlessBucket.bucketEntity });
     const serverlessApplication = new emrserverlss.CfnApplication(this, 'application', {

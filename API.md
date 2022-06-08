@@ -4,6 +4,29 @@
 
 ### EmrClusterTemplateStack <a name="EmrClusterTemplateStack" id="cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack"></a>
 
+Creates a CloudFormation template which will be a Product under a Portfolio of AWS Service Catalog.
+
+This is for creating an EMR cluster via cluster template in the EMR Studio, created by the `EmrServerless` construct, on the AWS Console.
+
+And you don't have control via the `EmrServerless` construct by now. The documentation is for you to grasp the architecture of the `EmrServerless` more easily.
+
+For detail, please refer to [Create AWS CloudFormation templates for Amazon EMR Studio](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-cluster-templates.html).
+
+```ts
+const product = new servicecatalog.CloudFormationProduct(this, 'MyFirstProduct', {
+    productName: 'EMR_6.6.0',
+    owner: 'scott.hsieh',
+    description: 'EMR cluster with 6.6.0 version',
+    productVersions: [
+      {
+        productVersionName: 'v1',
+        validateTemplate: true,
+        cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new EmrClusterTemplateStack(this, 'EmrStudio')),
+      },
+],
+});
+```
+
 #### Initializers <a name="Initializers" id="cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.Initializer"></a>
 
 ```typescript
@@ -2198,6 +2221,7 @@ const emrServerlessProps: EmrServerlessProps = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrServerlessProps.property.subnetIds">subnetIds</a></code> | <code>string[]</code> | The subnet IDs for the EMR studio. |
+| <code><a href="#cdk-emrserverless-with-delta-lake.EmrServerlessProps.property.serviceCatalogProps">serviceCatalogProps</a></code> | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioDeveloperStackProps">EmrStudioDeveloperStackProps</a></code> | Options for which kind of identity will be associated with the Product of the Porfolio in AWS Service Catalog for EMR cluster templates. |
 
 ---
 
@@ -2212,6 +2236,20 @@ public readonly subnetIds: string[];
 The subnet IDs for the EMR studio.
 
 You can select the subnets from the default VPC in your AWS account.
+
+---
+
+##### `serviceCatalogProps`<sup>Optional</sup> <a name="serviceCatalogProps" id="cdk-emrserverless-with-delta-lake.EmrServerlessProps.property.serviceCatalogProps"></a>
+
+```typescript
+public readonly serviceCatalogProps: EmrStudioDeveloperStackProps;
+```
+
+- *Type:* <a href="#cdk-emrserverless-with-delta-lake.EmrStudioDeveloperStackProps">EmrStudioDeveloperStackProps</a>
+
+Options for which kind of identity will be associated with the Product of the Porfolio in AWS Service Catalog for EMR cluster templates.
+
+You can choose either an IAM group, IAM role, or IAM user. If you leave it empty, an IAM user named `Administrator` with the `AdministratorAccess` power needs to be created first.
 
 ---
 
@@ -2231,7 +2269,22 @@ const emrStudioDeveloperStackProps: EmrStudioDeveloperStackProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioDeveloperStackProps.property.group">group</a></code> | <code>aws-cdk-lib.aws_iam.IGroup</code> | an IAM group you wish to associate with the Portfolio for EMR cluster template. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioDeveloperStackProps.property.providerName">providerName</a></code> | <code>string</code> | The provider name in a Service Catalog for EMR cluster templates. |
+| <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioDeveloperStackProps.property.role">role</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | an IAM role you wish to associate with the Portfolio for EMR cluster template. |
+| <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioDeveloperStackProps.property.user">user</a></code> | <code>aws-cdk-lib.aws_iam.IUser</code> | an IAM user you wish to associate with the Portfolio for EMR cluster template. |
+
+---
+
+##### `group`<sup>Optional</sup> <a name="group" id="cdk-emrserverless-with-delta-lake.EmrStudioDeveloperStackProps.property.group"></a>
+
+```typescript
+public readonly group: IGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IGroup
+
+an IAM group you wish to associate with the Portfolio for EMR cluster template.
 
 ---
 
@@ -2245,6 +2298,30 @@ public readonly providerName: string;
 - *Default:* 'scott.hsieh'
 
 The provider name in a Service Catalog for EMR cluster templates.
+
+---
+
+##### `role`<sup>Optional</sup> <a name="role" id="cdk-emrserverless-with-delta-lake.EmrStudioDeveloperStackProps.property.role"></a>
+
+```typescript
+public readonly role: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+an IAM role you wish to associate with the Portfolio for EMR cluster template.
+
+---
+
+##### `user`<sup>Optional</sup> <a name="user" id="cdk-emrserverless-with-delta-lake.EmrStudioDeveloperStackProps.property.user"></a>
+
+```typescript
+public readonly user: IUser;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IUser
+
+an IAM user you wish to associate with the Portfolio for EMR cluster template.
 
 ---
 
@@ -2302,6 +2379,7 @@ const emrStudioProps: EmrStudioProps = { ... }
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.authMode">authMode</a></code> | <code><a href="#cdk-emrserverless-with-delta-lake.StudioAuthMode">StudioAuthMode</a></code> | Specifies whether the Studio authenticates users using AWS SSO or IAM. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.description">description</a></code> | <code>string</code> | A detailed description of the Amazon EMR Studio. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.engineSecurityGroupId">engineSecurityGroupId</a></code> | <code>string</code> | The ID of the Amazon EMR Studio Engine security group. |
+| <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.serviceCatalogProps">serviceCatalogProps</a></code> | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioDeveloperStackProps">EmrStudioDeveloperStackProps</a></code> | Options for which kind of identity will be associated with the Product of the Porfolio in AWS Service Catalog for EMR cluster templates. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.serviceRoleArn">serviceRoleArn</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.serviceRoleName">serviceRoleName</a></code> | <code>string</code> | A name for the service role of an EMR Studio. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.studioName">studioName</a></code> | <code>string</code> | A descriptive name for the Amazon EMR Studio. |
@@ -2375,6 +2453,20 @@ public readonly engineSecurityGroupId: string;
 The ID of the Amazon EMR Studio Engine security group.
 
 The Engine security group allows inbound network traffic from the Workspace security group, and it must be in the same VPC specified by VpcId.
+
+---
+
+##### `serviceCatalogProps`<sup>Optional</sup> <a name="serviceCatalogProps" id="cdk-emrserverless-with-delta-lake.EmrStudioProps.property.serviceCatalogProps"></a>
+
+```typescript
+public readonly serviceCatalogProps: EmrStudioDeveloperStackProps;
+```
+
+- *Type:* <a href="#cdk-emrserverless-with-delta-lake.EmrStudioDeveloperStackProps">EmrStudioDeveloperStackProps</a>
+
+Options for which kind of identity will be associated with the Product of the Porfolio in AWS Service Catalog for EMR cluster templates.
+
+You can choose either an IAM group, IAM role, or IAM user. If you leave it empty, an IAM user named `Administrator` with the `AdministratorAccess` power needs to be created first.
 
 ---
 
