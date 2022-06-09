@@ -50,8 +50,6 @@ const project = new projen.awscdk.AwsCdkConstructLibrary({
   npmAccess: projen.javascript.NpmAccess.PUBLIC,
 
   eslint: true,
-  projenUpgradeSecret: 'PROJEN_UPGRADE_SECRET',
-  projenUpgradeAutoMerge: true,
   depsUpgradeOptions: {
     ignoreProjen: false,
     workflowOptions: {
