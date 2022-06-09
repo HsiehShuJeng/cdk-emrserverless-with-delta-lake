@@ -1,4 +1,4 @@
-module github.com/HsiehShuJeng/cdk-emrserverless-with-delta-lake/cdkemrserverlesswithdeltalake/v2
+module github.com/HsiehShuJeng/cdk-emrserverless-with-delta-lake/cdkemrserverlesswithdeltalake
 
 go 1.16
 

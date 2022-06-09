@@ -3,7 +3,7 @@ package cdkemrserverlesswithdeltalake
 
 import (
 	_jsii_ "github.com/aws/jsii-runtime-go/runtime"
-	_init_ "github.com/HsiehShuJeng/cdk-emrserverless-with-delta-lake/cdkemrserverlesswithdeltalake/v2/jsii"
+	_init_ "github.com/HsiehShuJeng/cdk-emrserverless-with-delta-lake/cdkemrserverlesswithdeltalake/jsii"
 
 	"github.com/aws/aws-cdk-go/awscdk/v2"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awsec2"
@@ -14,7 +14,7 @@ import (
 	"github.com/aws/aws-cdk-go/awscdk/v2/awsservicecatalog"
 	"github.com/aws/aws-cdk-go/awscdk/v2/cloudassemblyschema"
 	"github.com/aws/constructs-go/constructs/v10"
-	"github.com/HsiehShuJeng/cdk-emrserverless-with-delta-lake/cdkemrserverlesswithdeltalake/v2/internal"
+	"github.com/HsiehShuJeng/cdk-emrserverless-with-delta-lake/cdkemrserverlesswithdeltalake/internal"
 )
 
 // Creates a CloudFormation template which will be a Product under a Portfolio of AWS Service Catalog.
