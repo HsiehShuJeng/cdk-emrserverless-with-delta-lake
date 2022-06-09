@@ -89,7 +89,7 @@ const project = new projen.awscdk.AwsCdkConstructLibrary({
   },
 
   publishToGo: {
-    moduleName: 'github.com/HsiehShuJeng/cdk-emrserverless-with-delta-lake-go',
+    moduleName: 'github.com/HsiehShuJeng/cdk-emrserverless-with-delta-lake',
   },
 });
 const mavenExclusions = ['public.pem', 'private.pem'];
