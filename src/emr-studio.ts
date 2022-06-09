@@ -36,7 +36,7 @@ export interface EmrStudioProps {
      * The subnet IDs for the EMR studio.
      * You can select the subnets from the default VPC in your AWS account.
      */
-  readonly subnetIds: Array<string>;
+  readonly subnetIds?: Array<string>;
   /**
                                                  * Specifies whether the Studio authenticates users using AWS SSO or IAM.
                                                  *
@@ -126,14 +126,22 @@ export class EmrStudio extends Construct {
   constructor(scope: Construct, name: string, props: EmrStudioProps) {
     super(scope, name);
     const baseVpc = (props.vpcId !== undefined) ? ec2.Vpc.fromLookup(this, 'EmrBaseVpc', { vpcId: props!.vpcId }) : ec2.Vpc.fromLookup(this, 'DefaultVpc', { isDefault: true });
-    if (props.vpcId !== undefined) {
+    if (props.vpcId === undefined) {
       console.log('`vpcId` is not set for the EmrStudio construct, therefore, the default VPC is chosen.');
     }
+    const defaultSubnetIds: Array<string> = [];
+    baseVpc.publicSubnets.forEach((subnet) => {
+      defaultSubnetIds.push(subnet.subnetId);
+    });
+    if (props.subnetIds === undefined) {
+      console.log('`subnetIds` for the `EmrStudio` construct is not set, therefore, public subnets from the chosen VPC is chosen.');
+    };
+    const subnetIds: Array<string> = (props.subnetIds !== undefined) ? props.subnetIds : defaultSubnetIds;
+    console.log(`${subnetIds.toString()} are selected for the EMR Studio`);
     const workSpaceSecurityGroup = new EmrStudioWorkspaceSecurityGroup(this, 'Workspace', { vpc: baseVpc });
     const engineSecurityGroup = new EmrStudioEngineSecurityGroup(this, 'Engine', { vpc: baseVpc });
     workSpaceSecurityGroup.entity.connections.allowTo(engineSecurityGroup.entity, ec2.Port.tcp(18888), 'Allow traffic to any resources in the Engine security group for EMR Studio.');
     workSpaceSecurityGroup.entity.addEgressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(443), 'Allow traffic to the internet to link publicly hosted Git repositories to Workspaces.');
-    const subnetIds: Array<string> = props.subnetIds;
 
     this.addProperTag(workSpaceSecurityGroup);
     this.addProperTag(engineSecurityGroup);
@@ -527,7 +535,7 @@ export class EmrStudioTaggingExpert extends Construct {
       logRetention: logs.RetentionDays.THREE_MONTHS,
       runtime: lambda.Runtime.PYTHON_3_9,
       architecture: lambda.Architecture.ARM_64,
-      code: lambda.Code.fromInline('import json\r\nfrom typing import List\r\n\r\nimport boto3\r\nfrom botocore.exceptions import ClientError, ParamValidationError\r\n\r\n\r\ndef lambda_handler(event, context):\r\n    print(json.dumps(event, indent=4))\r\n    request_type = event["RequestType"]\r\n    props = event["ResourceProperties"]\r\n    vpc_id: str = props.get(\'VpcId\')\r\n    subnet_ids: List[str] = props.get(\'SubnetIds\').split(\',\')\r\n    resources_list = [vpc_id] + subnet_ids\r\n    ec2_client = boto3.client(\'ec2\')\r\n    if(request_type in [\'Create\', \'Update\']):\r\n        try:\r\n            response = ec2_client.create_tags(\r\n                Resources=resources_list,\r\n                Tags=[\r\n                    {\r\n                        \'Key\': \'for-use-with-amazon-emr-managed-policies\',\r\n                        \'Value\': \'true\'\r\n                    }\r\n                ]\r\n            )\r\n            metadata = response.get(\'ResponseMetadata\')\r\n            status_code = metadata.get(\'HTTPStatusCode\')\r\n            print(f\'HTTP status code: {status_code}\')\r\n            if status_code == 200:\r\n                resources = \',\'.join(resources_list)\r\n                tag_value = json.dumps({\r\n                    \'Key\': \'for-use-with-amazon-emr-managed-policies\',\r\n                    \'Value\': \'true\'\r\n                }, indent=4)\r\n                print(f\'{resources} has been added {tag_value}\')\r\n        except ClientError as e:\r\n            print(f\'Unexpected error: {e}\')\r\n        except ParamValidationError as e:\r\n            print(f\'Parameter validation error: {e}\')\r\n    if(request_type == \'Delete\'):\r\n        try:\r\n            response = ec2_client.delete_tags(\r\n                Resources=resources_list,\r\n                Tags=[\r\n                    {\r\n                        \'Key\': \'for-use-with-amazon-emr-managed-policies\',\r\n                        \'Value\': \'true\'\r\n                    }\r\n                ]\r\n            )\r\n            metadata = response.get(\'ResponseMetadata\')\r\n            status_code = metadata.get(\'HTTPStatusCode\')\r\n            print(f\'HTTP status code: {status_code}\')\r\n            if status_code == 200:\r\n                resources = \',\'.join(resources_list)\r\n                tag_value = json.dumps({\r\n                    \'Key\': \'for-use-with-amazon-emr-managed-policies\',\r\n                    \'Value\': \'true\'\r\n                }, indent=4)\r\n                print(f\'{resources} has been removed {tag_value}\')\r\n        except ClientError as e:\r\n            print(f\'Unexpected error: {e}\')\r\n        except ParamValidationError as e:\r\n            print(f\'Parameter validation error: {e}\')\r\n'),
+      code: lambda.Code.fromInline('import json\r\nfrom typing import List\r\n\r\nimport boto3\r\nfrom botocore.exceptions import ClientError, ParamValidationError\r\n\r\n\r\ndef lambda_handler(event, context):\r\n    print(json.dumps(event, indent=4))\r\n    request_type = event["RequestType"]\r\n    props = event["ResourceProperties"]\r\n    vpc_id: str = props.get(\'VpcId\')\r\n    subnet_ids: List[str] = props.get(\'SubnetIds\').split(\',\')\r\n    resources_list = [vpc_id] + subnet_ids\r\n    ec2_client = boto3.client(\'ec2\')\r\n    if(request_type in [\'Create\']):\r\n        try:\r\n            response = ec2_client.create_tags(\r\n                Resources=resources_list,\r\n                Tags=[\r\n                    {\r\n                        \'Key\': \'for-use-with-amazon-emr-managed-policies\',\r\n                        \'Value\': \'true\'\r\n                    }\r\n                ]\r\n            )\r\n            metadata = response.get(\'ResponseMetadata\')\r\n            status_code = metadata.get(\'HTTPStatusCode\')\r\n            print(f\'HTTP status code: {status_code}\')\r\n            if status_code == 200:\r\n                resources = \',\'.join(resources_list)\r\n                tag_value = json.dumps({\r\n                    \'Key\': \'for-use-with-amazon-emr-managed-policies\',\r\n                    \'Value\': \'true\'\r\n                }, indent=4)\r\n                print(f\'{resources} has been added {tag_value}\')\r\n        except ClientError as e:\r\n            print(f\'Unexpected error: {e}\')\r\n        except ParamValidationError as e:\r\n            print(f\'Parameter validation error: {e}\')\r\n    if(request_type == \'Delete\'):\r\n        try:\r\n            response = ec2_client.delete_tags(\r\n                Resources=resources_list,\r\n                Tags=[\r\n                    {\r\n                        \'Key\': \'for-use-with-amazon-emr-managed-policies\',\r\n                        \'Value\': \'true\'\r\n                    }\r\n                ]\r\n            )\r\n            metadata = response.get(\'ResponseMetadata\')\r\n            status_code = metadata.get(\'HTTPStatusCode\')\r\n            print(f\'HTTP status code: {status_code}\')\r\n            if status_code == 200:\r\n                resources = \',\'.join(resources_list)\r\n                tag_value = json.dumps({\r\n                    \'Key\': \'for-use-with-amazon-emr-managed-policies\',\r\n                    \'Value\': \'true\'\r\n                }, indent=4)\r\n                print(f\'{resources} has been removed {tag_value}\')\r\n        except ClientError as e:\r\n            print(f\'Unexpected error: {e}\')\r\n        except ParamValidationError as e:\r\n            print(f\'Parameter validation error: {e}\')\r\n'),
       handler: 'index.lambda_handler',
       memorySize: 128,
       role: lambdaRole,

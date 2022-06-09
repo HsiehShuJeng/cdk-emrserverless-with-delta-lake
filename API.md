@@ -833,8 +833,40 @@ Whether termination protection is enabled for this stack.
 Creates an EMR Studio, an EMR cluster template for the studio, and an EMR Serverless application.
 
 ```ts
+// the quickiest deployment
+new EmrServerless(this, 'EmrServerless');
+
+// custom deployment references
 new EmrServerless(this, 'EmrServerless', {
-      subnetIds: ['subnet-aaa11222', 'subnet-bbb44555', 'subnet-ccc66777']
+    vpcId: 'vpc-idididid',
+});
+
+new EmrServerless(this, 'EmrServerless', {
+    vpcId: 'vpc-idididid',
+    subnetIds: ['subnet-eeeee', 'subnet-fffff']
+});
+
+const myRole = new iam.Role.fromRoleName('MyRole');
+new EmrServerless(this, 'EmrServerless', {
+    serviceCatalogProps: {
+        role: myRole
+    }
+});
+
+const myUser = new iam.Role.fromUserName('MyUser');
+new EmrServerless(this, 'EmrServerless', {
+    vpcId: 'vpc-idididid',
+    subnetIds: ['subnet-eeeee', 'subnet-fffff'],
+    serviceCatalogProps: {
+        user: myUser
+    }
+});
+
+const myGroup = new iam.Group.fromGroupName('MyGroup');
+new EmrServerless(this, 'EmrServerless', {
+    serviceCatalogProps: {
+        group: myGroup
+    }
 });
 ```
 
@@ -843,7 +875,7 @@ new EmrServerless(this, 'EmrServerless', {
 ```typescript
 import { EmrServerless } from 'cdk-emrserverless-with-delta-lake'
 
-new EmrServerless(scope: Construct, name: string, props: EmrServerlessProps)
+new EmrServerless(scope: Construct, name: string, props?: EmrServerlessProps)
 ```
 
 | **Name** | **Type** | **Description** |
@@ -866,7 +898,7 @@ new EmrServerless(scope: Construct, name: string, props: EmrServerlessProps)
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="cdk-emrserverless-with-delta-lake.EmrServerless.Initializer.parameter.props"></a>
+##### `props`<sup>Optional</sup> <a name="props" id="cdk-emrserverless-with-delta-lake.EmrServerless.Initializer.parameter.props"></a>
 
 - *Type:* <a href="#cdk-emrserverless-with-delta-lake.EmrServerlessProps">EmrServerlessProps</a>
 
@@ -2220,22 +2252,9 @@ const emrServerlessProps: EmrServerlessProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#cdk-emrserverless-with-delta-lake.EmrServerlessProps.property.subnetIds">subnetIds</a></code> | <code>string[]</code> | The subnet IDs for the EMR studio. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrServerlessProps.property.serviceCatalogProps">serviceCatalogProps</a></code> | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioDeveloperStackProps">EmrStudioDeveloperStackProps</a></code> | Options for which kind of identity will be associated with the Product of the Porfolio in AWS Service Catalog for EMR cluster templates. |
-
----
-
-##### `subnetIds`<sup>Required</sup> <a name="subnetIds" id="cdk-emrserverless-with-delta-lake.EmrServerlessProps.property.subnetIds"></a>
-
-```typescript
-public readonly subnetIds: string[];
-```
-
-- *Type:* string[]
-
-The subnet IDs for the EMR studio.
-
-You can select the subnets from the default VPC in your AWS account.
+| <code><a href="#cdk-emrserverless-with-delta-lake.EmrServerlessProps.property.subnetIds">subnetIds</a></code> | <code>string[]</code> | The subnet IDs for the EMR studio. |
+| <code><a href="#cdk-emrserverless-with-delta-lake.EmrServerlessProps.property.vpcId">vpcId</a></code> | <code>string</code> | Used by the EMR Studio. |
 
 ---
 
@@ -2250,6 +2269,33 @@ public readonly serviceCatalogProps: EmrStudioDeveloperStackProps;
 Options for which kind of identity will be associated with the Product of the Porfolio in AWS Service Catalog for EMR cluster templates.
 
 You can choose either an IAM group, IAM role, or IAM user. If you leave it empty, an IAM user named `Administrator` with the `AdministratorAccess` power needs to be created first.
+
+---
+
+##### `subnetIds`<sup>Optional</sup> <a name="subnetIds" id="cdk-emrserverless-with-delta-lake.EmrServerlessProps.property.subnetIds"></a>
+
+```typescript
+public readonly subnetIds: string[];
+```
+
+- *Type:* string[]
+
+The subnet IDs for the EMR studio.
+
+You can select the subnets from the default VPC in your AWS account.
+
+---
+
+##### `vpcId`<sup>Optional</sup> <a name="vpcId" id="cdk-emrserverless-with-delta-lake.EmrServerlessProps.property.vpcId"></a>
+
+```typescript
+public readonly vpcId: string;
+```
+
+- *Type:* string
+- *Default:* 'The default VPC will be used.'
+
+Used by the EMR Studio.
 
 ---
 
@@ -2374,7 +2420,6 @@ const emrStudioProps: EmrStudioProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.subnetIds">subnetIds</a></code> | <code>string[]</code> | The subnet IDs for the EMR studio. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.workSpaceBucket">workSpaceBucket</a></code> | <code><a href="#cdk-emrserverless-with-delta-lake.WorkSpaceBucket">WorkSpaceBucket</a></code> | The custom construct as the workspace S3 bucket. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.authMode">authMode</a></code> | <code><a href="#cdk-emrserverless-with-delta-lake.StudioAuthMode">StudioAuthMode</a></code> | Specifies whether the Studio authenticates users using AWS SSO or IAM. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.description">description</a></code> | <code>string</code> | A detailed description of the Amazon EMR Studio. |
@@ -2383,23 +2428,10 @@ const emrStudioProps: EmrStudioProps = { ... }
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.serviceRoleArn">serviceRoleArn</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.serviceRoleName">serviceRoleName</a></code> | <code>string</code> | A name for the service role of an EMR Studio. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.studioName">studioName</a></code> | <code>string</code> | A descriptive name for the Amazon EMR Studio. |
+| <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.subnetIds">subnetIds</a></code> | <code>string[]</code> | The subnet IDs for the EMR studio. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.userRoleArn">userRoleArn</a></code> | <code>string</code> | The custom user role for the EMR Studio when authentication is AWS SSO. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.vpcId">vpcId</a></code> | <code>string</code> | Used by the EMR Studio. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrStudioProps.property.workSpaceSecurityGroupId">workSpaceSecurityGroupId</a></code> | <code>string</code> | The ID of the security group used by the workspace. |
-
----
-
-##### `subnetIds`<sup>Required</sup> <a name="subnetIds" id="cdk-emrserverless-with-delta-lake.EmrStudioProps.property.subnetIds"></a>
-
-```typescript
-public readonly subnetIds: string[];
-```
-
-- *Type:* string[]
-
-The subnet IDs for the EMR studio.
-
-You can select the subnets from the default VPC in your AWS account.
 
 ---
 
@@ -2509,6 +2541,20 @@ public readonly studioName: string;
 - *Default:* 'emr-sutdio-quicklaunch'
 
 A descriptive name for the Amazon EMR Studio.
+
+---
+
+##### `subnetIds`<sup>Optional</sup> <a name="subnetIds" id="cdk-emrserverless-with-delta-lake.EmrStudioProps.property.subnetIds"></a>
+
+```typescript
+public readonly subnetIds: string[];
+```
+
+- *Type:* string[]
+
+The subnet IDs for the EMR studio.
+
+You can select the subnets from the default VPC in your AWS account.
 
 ---
 

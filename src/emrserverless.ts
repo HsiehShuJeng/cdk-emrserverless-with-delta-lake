@@ -10,10 +10,16 @@ import { EmrStudioDeveloperStackProps } from './emr-studio-cluster-templates';
 
 export interface EmrServerlessProps {
   /**
+   * Used by the EMR Studio.
+   *
+   * @default - 'The default VPC will be used.'
+   */
+  readonly vpcId?: string;
+  /**
      * The subnet IDs for the EMR studio.
      * You can select the subnets from the default VPC in your AWS account.
      */
-  readonly subnetIds: Array<string>;
+  readonly subnetIds?: Array<string>;
   /**
    * Options for which kind of identity will be associated with the Product of the Porfolio in AWS Service Catalog for EMR cluster templates.
    *
@@ -26,19 +32,51 @@ export interface EmrServerlessProps {
  * Creates an EMR Studio, an EMR cluster template for the studio, and an EMR Serverless application.
  *
  * ```ts
+ * // the quickiest deployment
+ * new EmrServerless(this, 'EmrServerless');
+ *
+ * // custom deployment references
  * new EmrServerless(this, 'EmrServerless', {
- *      subnetIds: ['subnet-aaa11222', 'subnet-bbb44555', 'subnet-ccc66777']
+ *    vpcId: 'vpc-idididid',
+ * });
+ *
+ * new EmrServerless(this, 'EmrServerless', {
+ *    vpcId: 'vpc-idididid',
+ *    subnetIds: ['subnet-eeeee', 'subnet-fffff']
+ * });
+ *
+ * const myRole = new iam.Role.fromRoleName('MyRole');
+ * new EmrServerless(this, 'EmrServerless', {
+ *    serviceCatalogProps: {
+ *        role: myRole
+ *    }
+ * });
+ *
+ * const myUser = new iam.Role.fromUserName('MyUser');
+ * new EmrServerless(this, 'EmrServerless', {
+ *    vpcId: 'vpc-idididid',
+ *    subnetIds: ['subnet-eeeee', 'subnet-fffff'],
+ *    serviceCatalogProps: {
+ *        user: myUser
+ *    }
+ * });
+ *
+ * const myGroup = new iam.Group.fromGroupName('MyGroup');
+ * new EmrServerless(this, 'EmrServerless', {
+ *    serviceCatalogProps: {
+ *        group: myGroup
+ *    }
  * });
  * ```
  */
 export class EmrServerless extends Construct {
-  constructor(scope: Construct, name: string, props: EmrServerlessProps) {
+  constructor(scope: Construct, name: string, props?: EmrServerlessProps) {
     super(scope, name);
     const workspaceBucket = new WorkSpaceBucket(this, 'EmrStudio');
     const emrServerlessBucket = new EmrServerlessBucket(this, 'EmrServerless');
     new EmrStudio(this, 'QuickDemo', {
       workSpaceBucket: workspaceBucket,
-      subnetIds: props.subnetIds,
+      subnetIds: props?.subnetIds,
       serviceCatalogProps: props?.serviceCatalogProps,
     });
     new ServerlessJobRole(this, 'ExecutionJob', { emrServerlessBucket: emrServerlessBucket.bucketEntity });

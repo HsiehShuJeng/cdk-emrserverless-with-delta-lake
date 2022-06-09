@@ -566,7 +566,7 @@
     chalk "^4.1.2"
     semver "^7.3.7"
 
-"@jsii/spec@1.60.0", "@jsii/spec@^1.59.0", "@jsii/spec@^1.60.0":
+"@jsii/spec@1.60.0", "@jsii/spec@^1.60.0":
   version "1.60.0"
   resolved "https://registry.yarnpkg.com/@jsii/spec/-/spec-1.60.0.tgz#514dfa0aadb5c6d35dbc8aa96efad822f9852f58"
   integrity sha512-rlmicpzxrY6t93RK6UICgTmm1GQZ6U8UbA4gy1XXmcQxY4zM8/r2D5sKFIC0RPNDFR4LI3l1ltGlwrNbZJyCdw==
@@ -1423,9 +1423,9 @@ camelcase@^6.2.0, camelcase@^6.3.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30001349:
-  version "1.0.30001350"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001350.tgz#f0acc6472469d066a4357765eb73be5973eda918"
-  integrity sha512-NZBql38Pzd+rAu5SPXv+qmTWGQuFsRiemHCJCAPvkoDxWV19/xqL2YHF32fDJ9SDLdLqfax8+S0CO3ncDCp9Iw==
+  version "1.0.30001351"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001351.tgz#fd38e07c0ab75921169bac5076b0e0c5f58f9b50"
+  integrity sha512-u+Ll+RDaiQEproTQjZLjZwyfNgNezA1fERMT7/54npcz+PkbVJUAHXMUz4bkXQYRPWrcFNO0Fbi1mwjfXg6N5g==
 
 case@1.6.3, case@^1.6.3:
   version "1.6.3"
@@ -1633,9 +1633,9 @@ console-control-strings@^1.1.0:
   integrity sha512-ty/fTekppD2fIwRvnZAVdeOiGd1c7YXEixbgJTNzqcxJWKQnjJ/V1bNEEE6hygpM3WjwHFUVK6HTjWSzV4a8sQ==
 
 constructs@^10.0.5:
-  version "10.1.32"
-  resolved "https://registry.yarnpkg.com/constructs/-/constructs-10.1.32.tgz#209a481e380a5555eab98a5d25f8b313c0661a59"
-  integrity sha512-ztRzzQqeqfj/LNaw46ctcR/mirjnnj8dVMd5edibwFa1Ih7J0NK2+BHbRhYE93W7Flvhk2cyLE2bNIu1cByHAQ==
+  version "10.1.33"
+  resolved "https://registry.yarnpkg.com/constructs/-/constructs-10.1.33.tgz#bb0715f09ef96a29c2654fd1afc3ac0e4606e2cb"
+  integrity sha512-OgqPYjBLbMFcaQ9bsdvF59orh46GNwg3tBdyOlhuWm8ljRxaQ2jEJ3XAj06I0/+sTAcsF9sZ9GAVmJIiCTnBkA==
 
 conventional-changelog-angular@^5.0.12:
   version "5.0.13"
@@ -2061,9 +2061,9 @@ duplexer3@^0.1.4:
   integrity sha512-CEj8FwwNA4cVH2uFCoHUrmojhYh1vmCdOaneKJXwkeY1i9jnlslVo9dx+hQ5Hl9GnH/Bwy/IjxAyOePyPKYnzA==
 
 electron-to-chromium@^1.4.147:
-  version "1.4.148"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.148.tgz#437430e03c58ccd1d05701f66980afe54d2253ec"
-  integrity sha512-8MJk1bcQUAYkuvCyWZxaldiwoDG0E0AMzBGA6cv3WfuvJySiPgfidEPBFCRRH3cZm6SVZwo/oRlK1ehi1QNEIQ==
+  version "1.4.150"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.150.tgz#89f0e12505462d5df7e56c5b91aff7e1dfdd33ec"
+  integrity sha512-MP3oBer0X7ZeS9GJ0H6lmkn561UxiwOIY9TTkdxVY7lI9G6GVCKfgJaHaDcakwdKxBXA4T3ybeswH/WBIN/KTA==
 
 emittery@^0.8.1:
   version "0.8.1"
@@ -3957,18 +3957,18 @@ jsii-diff@^1.60.0:
     log4js "^6.4.7"
     yargs "^16.2.0"
 
-jsii-docgen@^7.0.29:
-  version "7.0.29"
-  resolved "https://registry.yarnpkg.com/jsii-docgen/-/jsii-docgen-7.0.29.tgz#14a4cfe9fb5d1d596cee4f39e053773653950998"
-  integrity sha512-w20lKV8c4zlL0VCs8udNqMLDdEBQyNNF/Z5VX1qphS8zdqLo6AYa3U9WlyLrZZnfclvCJJ7XhUJW6/AUZG+a1g==
+jsii-docgen@^7.0.30:
+  version "7.0.30"
+  resolved "https://registry.yarnpkg.com/jsii-docgen/-/jsii-docgen-7.0.30.tgz#a9bad7b94e388d3763bad367735b551e85b99fbe"
+  integrity sha512-YVwz93dgW3d49CNfbz30VD80tXT2P3x53eK2fFAtE/KgdC10hCuPeK8TMJL8MX6c8aDX4mRljNMiF+6Bl80MWw==
   dependencies:
-    "@jsii/spec" "^1.59.0"
+    "@jsii/spec" "^1.60.0"
     case "^1.6.3"
     fs-extra "^10.1.0"
     glob "^7.2.3"
     glob-promise "^3.4.0"
-    jsii-reflect "^1.59.0"
-    jsii-rosetta "^1.59.0"
+    jsii-reflect "^1.60.0"
+    jsii-rosetta "^1.60.0"
     semver "^7.3.7"
     yargs "^16.2.0"
 
@@ -3991,7 +3991,7 @@ jsii-pacmak@^1.60.0:
     xmlbuilder "^15.1.1"
     yargs "^16.2.0"
 
-jsii-reflect@^1.59.0, jsii-reflect@^1.60.0:
+jsii-reflect@^1.60.0:
   version "1.60.0"
   resolved "https://registry.yarnpkg.com/jsii-reflect/-/jsii-reflect-1.60.0.tgz#ac4135fd74d125a5a4422f2db9d9141e1b8d3380"
   integrity sha512-ag717vfGQyVJ1qRUZoUQRoHoc9vVDABMBL1wbDP2bUkZ+rNMi1mc1NHpx90tipUCdQhH1KoQgWxMKs/29tQSkw==
@@ -4003,7 +4003,7 @@ jsii-reflect@^1.59.0, jsii-reflect@^1.60.0:
     oo-ascii-tree "^1.60.0"
     yargs "^16.2.0"
 
-jsii-rosetta@^1.59.0, jsii-rosetta@^1.60.0:
+jsii-rosetta@^1.60.0:
   version "1.60.0"
   resolved "https://registry.yarnpkg.com/jsii-rosetta/-/jsii-rosetta-1.60.0.tgz#95825fb1688328b637584e69aa51a6df037d3cc7"
   integrity sha512-yop9TSoogHCin2qp8CWejPLUj+A1ourTw38wE4gS0qrLPkc9xKlnpJzSlBYvSU0q8RRJzbpUnB3rtT/AxShBvg==
@@ -5079,10 +5079,10 @@ progress@^2.0.3:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@0.58.1:
-  version "0.58.1"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.58.1.tgz#e724b36e451fcf4307bb70a7ca9eed454f899a8e"
-  integrity sha512-prrpRF949tq7Mr9wUCocJK0kZQtp8H5KUgsiu14IpXoQri/YBLfBQmgKFs616awSJE6uSOIR4D3kL4t9EIjHBg==
+projen@0.58.2:
+  version "0.58.2"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.58.2.tgz#0c4a1043bd15f92d3c5af16485414a9c7372c668"
+  integrity sha512-YyLOigccH80TLOLYsBZ0nU9XL6nuNwjP01fqm/bAY59g3ZxrjisDA9qdY7ZagsihIZ1po/oy8g9IqJ0gWIyk8Q==
   dependencies:
     "@iarna/toml" "^2.2.5"
     case "^1.6.3"
@@ -5445,7 +5445,7 @@ semver@^6.0.0, semver@^6.2.0, semver@^6.3.0:
 set-blocking@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/set-blocking/-/set-blocking-2.0.0.tgz#045f9782d011ae9a6803ddd382b24392b3d890f7"
-  integrity sha1-BF+XgtARrppoA93TgrJDkrPYkPc=
+  integrity sha512-KiKBS8AnWGEyLzofFfmvKwpdPzqiy16LvQfK3yv/fVH7Bj13/wl3JSR1J+rfgRE9q7xUJK4qvgS8raSOeLUehw==
 
 shebang-command@^2.0.0:
   version "2.0.0"
@@ -5611,7 +5611,7 @@ split@^1.0.0:
 sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
-  integrity sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=
+  integrity sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==
 
 ssri@^8.0.0, ssri@^8.0.1:
   version "8.0.1"

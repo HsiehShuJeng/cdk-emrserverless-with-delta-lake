@@ -6,9 +6,7 @@ import { EmrServerless } from '../../emrserverless';
 class TypescriptStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
-    new EmrServerless(this, 'EmrServerless', {
-      subnetIds: ['subnet-a4bfe38c', 'subnet-278b3050', 'subnet-3571a36c'],
-    });
+    new EmrServerless(this, 'EmrServerless');
   }
 }
 

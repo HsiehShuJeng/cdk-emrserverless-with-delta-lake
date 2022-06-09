@@ -52,7 +52,16 @@ const project = new projen.awscdk.AwsCdkConstructLibrary({
   eslint: true,
   projenUpgradeSecret: 'PROJEN_UPGRADE_SECRET',
   projenUpgradeAutoMerge: true,
-  depsUpgrade: true,
+  depsUpgradeOptions: {
+    ignoreProjen: false,
+    workflowOptions: {
+      labels: ['auto-approve', 'auto-merge'],
+    },
+  },
+  autoApproveOptions: {
+    secret: 'GITHUB_TOKEN',
+    allowedUsernames: ['HsiehShuJeng'],
+  },
 
   // publish to npm
   releaseToNpm: true,

@@ -13,7 +13,7 @@ def lambda_handler(event, context):
     subnet_ids: List[str] = props.get('SubnetIds').split(',')
     resources_list = [vpc_id] + subnet_ids
     ec2_client = boto3.client('ec2')
-    if(request_type in ['Create', 'Update']):
+    if(request_type in ['Create']):
         try:
             response = ec2_client.create_tags(
                 Resources=resources_list,
