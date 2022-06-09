@@ -24,8 +24,6 @@ They build the construct via [cdkv2](https://docs.aws.amazon.com/cdk/v2/guide/ho
 2. [An IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started_create-admin-group.html) named `Administrator` with the `AdministratorAccess` power.  
     * This is related to the Portfolio of AWS Service Catalog created by the construct, which is required for [EMR cluster tempaltes](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-cluster-templates.html).  
     * You can choose whatsoever identity you wish to associate with the Product in the Porfolio for creating an EMR cluster via cluster tempalte. Check `serviceCatalogProps` in the `EmrServerless` construct for detail, otherwise, the IAM user mentioned above will be chosen to set up with the Product.   
-3. Choose proper subnet (IDs) from the default VPC, other than which you can choose your destined VPC, for the `EmrServerless` construct.  
-   * You gotta check security issue yourself if you choose an alternative VPC. In this construct, the default VPC is set and for the quickiest deployment, you select proper subnets (IDs) from you default VPC and deploy it.  
 # Before deployment  
 You might want to execute the following command.  
 ```sh
