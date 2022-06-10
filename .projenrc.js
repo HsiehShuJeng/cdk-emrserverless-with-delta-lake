@@ -51,7 +51,7 @@ const project = new projen.awscdk.AwsCdkConstructLibrary({
 
   eslint: true,
   depsUpgradeOptions: {
-    ignoreProjen: true,
+    ignoreProjen: false,
     workflowOptions: {
       labels: ['auto-approve', 'auto-merge'],
     },
