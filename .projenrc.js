@@ -132,4 +132,15 @@ releaseWorkflow.addOverride('jobs.release.steps.3', {
   name: 'release',
   run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen release',
 });
+const upgradeWorkfolw = project.tryFindFile(
+  `${githubWorkflowRoot}/upgrade-main.yml`,
+);
+upgradeWorkfolw.addOverride('jobs.upgrade.steps.0', {
+  name: 'Chekout',
+  uses: 'actions/checkout@v3',
+  with: {
+    token: '${{ secrets.PROJEN_GITHUB_TOKEN }}',
+    ref: 'main',
+  },
+});
 project.synth();
