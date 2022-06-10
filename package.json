@@ -149,7 +149,7 @@
         "packageId": "Emrserverless.With.Delta.Lake"
       },
       "go": {
-        "moduleName": "github.com/HsiehShuJeng/cdk-emrserverless-with-delta-lake"
+        "moduleName": "github.com/HsiehShuJeng/cdk-emrserverless-with-delta-lake-go"
       }
     },
     "tsc": {
