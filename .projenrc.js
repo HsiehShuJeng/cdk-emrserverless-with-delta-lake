@@ -18,18 +18,12 @@ const project = new projen.awscdk.AwsCdkConstructLibrary({
     'emr-studio',
     'aws-service-catalog',
   ],
-  catalog: {
-    announce: true,
-    twitter: 'fantasticHsieh',
-  },
   cdkVersion: '2.27.0',
   constructsVersion: '10.1.25',
   majorVersion: 2,
   defaultReleaseBranch: 'main',
   name: 'cdk-emrserverless-with-delta-lake',
   repositoryUrl: 'https://github.com/HsiehShuJeng/cdk-emrserverless-with-delta-lake.git',
-
-  cdkVersionPinning: false, // see https://www.matthewbonig.com/2021/04/06/automating-construct-publishing/
   deps: [
     'aws-cdk-lib',
     'constructs@^10.0.5',
@@ -45,13 +39,8 @@ const project = new projen.awscdk.AwsCdkConstructLibrary({
     'aws-cdk-lib',
     'constructs@^10.0.5',
   ],
-  tsconfig: { include: ['src/**/*.ts', 'src/**.*.py'], compilerOptions: {} },
-
-  npmAccess: projen.javascript.NpmAccess.PUBLIC,
-
   eslint: true,
   depsUpgradeOptions: {
-    ignoreProjen: false,
     workflowOptions: {
       labels: ['auto-approve', 'auto-merge'],
     },
@@ -60,32 +49,21 @@ const project = new projen.awscdk.AwsCdkConstructLibrary({
     secret: 'GITHUB_TOKEN',
     allowedUsernames: ['HsiehShuJeng'],
   },
-
-  // publish to npm
   releaseToNpm: true,
-  releaseWorkflow: true,
-  releaseEveryCommit: true, //will run the release GitHub Action on each push to the defined
-
-  // publish to PyPi
   publishToPypi: {
     distName: 'cdk_emrserverless_with_delta_lake',
     module: 'cdk_emrserverless_with_delta_lake',
   },
-
-  // publish to Maven
   publishToMaven: {
     mavenGroupId: 'io.github.hsiehshujeng',
     mavenArtifactId: 'cdk-emrserverless-quickdemo-with-delta-lake',
     javaPackage: 'io.github.hsiehshujeng.cdk.emrserverless.quickdemo',
     mavenEndpoint: 'https://s01.oss.sonatype.org', // check https://central.sonatype.org/publish/release/#login-into-ossrh
   },
-
-  // publish to dotnet
   publishToNuget: {
     dotNetNamespace: 'ScottHsieh.Cdk',
     packageId: 'Emrserverless.With.Delta.Lake',
   },
-
   publishToGo: {
     moduleName: 'github.com/HsiehShuJeng/cdk-emrserverless-with-delta-lake',
   },

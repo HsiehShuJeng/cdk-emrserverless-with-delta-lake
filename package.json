@@ -157,10 +157,6 @@
       "rootDir": "src"
     }
   },
-  "awscdkio": {
-    "twitter": "fantasticHsieh",
-    "announce": true
-  },
   "resolutions": {
     "@types/prettier": "2.6.0"
   },
