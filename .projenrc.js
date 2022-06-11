@@ -112,4 +112,14 @@ releaseWorkflow.addOverride('jobs.release.steps.3', {
   name: 'release',
   run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen release',
 });
+const buildWorkFlow = project.github.tryFindWorkflow('build');
+buildWorkFlow.file.addOverride('jobs.build.env', {
+  AWS_REGION: 'ap-northeast-1',
+  AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}',
+  AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}',
+});
+buildWorkFlow.file.addOverride('jobs.build.steps.2', {
+  name: 'build',
+  run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen build'
+});
 project.synth();

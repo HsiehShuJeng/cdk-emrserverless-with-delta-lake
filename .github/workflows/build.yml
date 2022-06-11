@@ -13,6 +13,9 @@ jobs:
       self_mutation_happened: ${{ steps.self_mutation.outputs.self_mutation_happened }}
     env:
       CI: "true"
+      AWS_REGION: ap-northeast-1
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -22,7 +25,10 @@ jobs:
       - name: Install dependencies
         run: yarn install --check-files
       - name: build
-        run: npx projen build
+        run: |-
+          export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query 'Account' | tr -d '"')
+          export CDK_DEFAULT_REGION=${AWS_REGION}
+          npx projen build
       - id: self_mutation
         name: Find mutations
         run: |-
