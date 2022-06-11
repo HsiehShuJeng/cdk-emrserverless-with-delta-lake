@@ -1,5 +1,6 @@
 const { ProjectType } = require('projen');
 const projen = require('projen');
+const { GithubCredentials } = require('projen/lib/github');
 
 const project = new projen.awscdk.AwsCdkConstructLibrary({
   author: 'scott.hsieh',
@@ -111,76 +112,4 @@ releaseWorkflow.addOverride('jobs.release.steps.3', {
   name: 'release',
   run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen release',
 });
-/**
- * The automatic upgrading workflow failed all the times at the PR step.
- * The following alternation on the main-upgraded workflow is for making the workflow runnable.
- *
- * This link might be connected to the issue I encountered:
- *  https://github.blog/changelog/2021-02-19-github-actions-workflows-triggered-by-dependabot-prs-will-run-with-read-only-permissions/
- */
-const customizeUpgradeMainOrNote = true;
-if (customizeUpgradeMainOrNote == true) {
-  const upgradeMainFlow = project.github.tryFindWorkflow('upgrade-main');
-  upgradeMainFlow.file.addOverride('jobs.pr.steps', [{
-    id: 'setup',
-    run:
-      `if ! [[ -z \"$\{\{ secrets.PROJEN_GITUHB_TOKEN \}\}\" ]]; then
-    echo "PROJEN_GITHUB_TOKEN exists."
-    echo ::set-output has_token=true
-  else
-    echo "PROJEN_GITHUB_TOKEN doesn't exist."
-    echo ::set-output has_token=false
-  fi
-  jq -nc '{\"state\": \"pending\", \"context\": \"go tests\"}' | \
-  curl -sL -X POST -d @- \
-     -H "Content-Type: application/json" \
-     -H "Authorization: token $\{\{ secrets.GITHUB_TOKEN \}\}" \
-     "$\{\{ github.event.pull_request.statuses_url \}\}"`,
-    if: 'github.event_name == \'pull_request\'',
-  }, {
-    name: 'Checkout',
-    if: 'github.event_name == \'push\' && steps.setup.outputs.has_token == \'true\'',
-    uses: 'actions/checkout@v3',
-    with: {
-      token: '${{ secrets.PROJEN_GITHUB_TOKEN }}',
-      ref: 'main',
-    },
-  }, {
-    name: 'Checkout',
-    if: 'github.event_name == \'push\' || steps.setup.outputs.has_token != \'true\'',
-    uses: 'actions/checkout@v3',
-    with: {
-      ref: 'main',
-    },
-  }, {
-    name: 'Download patch',
-    uses: 'actions/download-artifact@v3',
-    with: {
-      name: '.repo.patch',
-      path: '${{ runner.temp }}',
-    },
-  }, {
-    name: 'Apply patch',
-    run: '[ -s ${{ runner.temp }}/.repo.patch ] && git apply ${{ runner.temp }}/.repo.patch || echo \"Empty patch. Skipping.\"',
-  }, {
-    name: 'Set git identity',
-    run: 'git config user.name \"github-actions\"\ngit config user.email \"github-actions@github.com\"',
-  }, {
-    name: 'Create Pull Request',
-    id: 'create-pr',
-    uses: 'peter-evans/create-pull-request@v3',
-    with: {
-      'token': '${{ secrets.PROJEN_GITHUB_TOKEN }}',
-      'commit-message': 'chore(deps): upgrade dependencies\n\nUpgrades project dependencies. See details in [workflow run].\n\n[Workflow Run]: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\n\n------\n\n*Automatically created by projen via the "upgrade-main" workflow*',
-      'branch': 'github-actions/upgrade-main',
-      'title': '\"chore(deps): upgrade dependencies\"',
-      'labels': 'auto-approve,auto-merge',
-      'body': 'Upgrades project dependencies. See details in [workflow run].\n\n[Workflow Run]: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\n\n------\n\n*Automatically created by projen via the "upgrade-main" workflow*',
-      'author': 'github-actions <github-actions@github.com>',
-      'committer': 'github-actions <github-actions@github.com>',
-      'signoff': true,
-    },
-  }]);
-}
-
 project.synth();
