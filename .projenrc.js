@@ -116,9 +116,16 @@ upgradeMainFlow.addOverride('jobs.upgrade.steps.0', {
   uses: 'actions/checkout@v2',
   with: {
     ref: 'main',
-    token: '${{ secrets.PROJEN_GITHUB_TOKEN }}'
-  }
+    token: '${{ secrets.PROJEN_GITHUB_TOKEN }}',
+  },
 });
+/**
+ * The automatic upgrading workflow failed all the times at the PR step. 
+ * The following alternation on the main-upgraded workflow is for making the workflow runnable.
+ * 
+ * This link might be connected to the issue I encountered:
+ *  https://github.blog/changelog/2021-02-19-github-actions-workflows-triggered-by-dependabot-prs-will-run-with-read-only-permissions/
+ */
 upgradeMainFlow.addOverride('jobs.pr.steps.0', {
   name: 'Checkout',
   uses: 'actions/checkout@v3',
@@ -131,7 +138,7 @@ else
 fi`,
   with: {
     token: '${{ secrets.PROJEN_GITHUB_TOKEN }}',
-    ref: 'main'
-  }
-})
+    ref: 'main',
+  },
+});
 project.synth();
