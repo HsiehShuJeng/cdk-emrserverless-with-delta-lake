@@ -56,13 +56,13 @@ jobs:
           jq -nc '{"state": "pending", "context": "go tests"}' | curl -sL -X POST -d @-    -H "Content-Type: application/json"    -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"    "${{ github.event.pull_request.statuses_url }}"
         if: github.event_name == 'pull_request'
       - name: Checkout
-        if: "if: github.event_name == 'push' && steps.setup.outputs.has_token == 'true'"
+        if: github.event_name == 'push' && steps.setup.outputs.has_token == 'true'
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.PROJEN_GITHUB_TOKEN }}
           ref: main
       - name: Checkout
-        if: "if: github.event_name || 'push' && steps.setup.outputs.has_token != 'true'"
+        if: github.event_name || 'push' && steps.setup.outputs.has_token != 'true'
         uses: actions/checkout@v3
         with:
           ref: main

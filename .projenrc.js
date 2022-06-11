@@ -137,7 +137,7 @@ curl -sL -X POST -d @- \
   if: 'github.event_name == \'pull_request\'',
 }, {
   name: 'Checkout',
-  if: 'if: github.event_name == \'push\' && steps.setup.outputs.has_token == \'true\'',
+  if: 'github.event_name == \'push\' && steps.setup.outputs.has_token == \'true\'',
   uses: 'actions/checkout@v3',
   with: {
     token: '${{ secrets.PROJEN_GITHUB_TOKEN }}',
@@ -145,7 +145,7 @@ curl -sL -X POST -d @- \
   },
 }, {
   name: 'Checkout',
-  if: 'if: github.event_name || \'push\' && steps.setup.outputs.has_token != \'true\'',
+  if: 'github.event_name || \'push\' && steps.setup.outputs.has_token != \'true\'',
   uses: 'actions/checkout@v3',
   with: {
     ref: 'main',
