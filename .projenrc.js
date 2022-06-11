@@ -21,25 +21,25 @@ const project = new projen.awscdk.AwsCdkConstructLibrary({
     'aws-service-catalog',
   ],
   cdkVersion: '2.27.0',
-  constructsVersion: '10.1.25',
+  constructsVersion: '10.1.35',
   majorVersion: 2,
   defaultReleaseBranch: 'main',
   name: 'cdk-emrserverless-with-delta-lake',
   repositoryUrl: 'https://github.com/HsiehShuJeng/cdk-emrserverless-with-delta-lake.git',
   deps: [
     'aws-cdk-lib',
-    'constructs@^10.0.5',
+    'constructs@^10.1.35',
   ],
   devDeps: [
     'aws-cdk-lib',
-    'constructs@^10.0.5',
+    'constructs@^10.1.35',
     // '@types/prettier@2.6.0', // for detail, see https://stackoverflow.com/questions/72222305/aws-cdk-2-0-init-app-fails-to-build-with-prettier-issues-which-is-from-jest-sna
     'esbuild',
     'source-map-support',
   ],
   peerDeps: [
     'aws-cdk-lib',
-    'constructs@^10.0.5',
+    'constructs@^10.1.35',
   ],
   eslint: true,
   depsUpgradeOptions: {
@@ -120,6 +120,6 @@ buildWorkFlow.file.addOverride('jobs.build.env', {
 });
 buildWorkFlow.file.addOverride('jobs.build.steps.2', {
   name: 'build',
-  run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen build'
+  run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen build',
 });
 project.synth();
