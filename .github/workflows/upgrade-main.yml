@@ -44,10 +44,27 @@ jobs:
       pull-requests: write
     if: ${{ needs.upgrade.outputs.patch_created }}
     steps:
+      - id: setup
+        run: |-
+          if ! [[ -z "${{ secrets.PROJEN_GITUHB_TOKEN }}" ]]; then
+            echo "PROJEN_GITHUB_TOKEN exists."
+            echo ::set-output has_token=true
+          else
+            echo "PROJEN_GITHUB_TOKEN doesn't exist."
+            echo ::set-output has_token=false
+          fi
+          jq -nc '{"state": "pending", "context": "go tests"}' | curl -sL -X POST -d @-    -H "Content-Type: application/json"    -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"    "${{ github.event.pull_request.statuses_url }}"
+        if: github.event_name == 'pull_request'
       - name: Checkout
+        if: "if: github.event_name == 'push' && steps.setup.outputs.has_token == 'true'"
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.PROJEN_GITHUB_TOKEN }}
+          ref: main
+      - name: Checkout
+        if: "if: github.event_name || 'push' && steps.setup.outputs.has_token != 'true'"
+        uses: actions/checkout@v3
+        with:
           ref: main
       - name: Download patch
         uses: actions/download-artifact@v3
@@ -55,7 +72,7 @@ jobs:
           name: .repo.patch
           path: ${{ runner.temp }}
       - name: Apply patch
-        run: '[ -s ${{ runner.temp }}/.repo.patch ] && git apply ${{ runner.temp }}/.repo.patch || echo "Empty patch. Skipping."'
+        run: "'[ -s ${{ runner.temp }}/.repo.patch ] && git apply ${{ runner.temp }}/.repo.patch || echo \"Empty patch. Skipping.\"'"
       - name: Set git identity
         run: |-
           git config user.name "github-actions"
@@ -76,7 +93,7 @@ jobs:
 
             *Automatically created by projen via the "upgrade-main" workflow*
           branch: github-actions/upgrade-main
-          title: "chore(deps): upgrade dependencies"
+          title: '"chore(deps): upgrade dependencies"'
           labels: auto-approve,auto-merge
           body: |-
             Upgrades project dependencies. See details in [workflow run].
@@ -87,5 +104,5 @@ jobs:
 
             *Automatically created by projen via the "upgrade-main" workflow*
           author: github-actions <github-actions@github.com>
-          committer: github-actions <github-actions@github.com>
+          comitter: github-actions <github-actions@github.com>
           signoff: true
