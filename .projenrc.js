@@ -110,35 +110,11 @@ releaseWorkflow.addOverride('jobs.release.steps.3', {
   name: 'release',
   run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen release',
 });
-const upgradeMainFlow = project.tryFindFile(`${githubWorkflowRoot}/upgrade-main.yml`);
-upgradeMainFlow.addOverride('jobs.upgrade.steps.0', {
-  name: 'Checkout',
-  uses: 'actions/checkout@v2',
-  with: {
-    ref: 'main',
-    token: '${{ secrets.PROJEN_GITHUB_TOKEN }}',
-  },
-});
 /**
- * The automatic upgrading workflow failed all the times at the PR step. 
+ * The automatic upgrading workflow failed all the times at the PR step.
  * The following alternation on the main-upgraded workflow is for making the workflow runnable.
- * 
+ *
  * This link might be connected to the issue I encountered:
  *  https://github.blog/changelog/2021-02-19-github-actions-workflows-triggered-by-dependabot-prs-will-run-with-read-only-permissions/
  */
-upgradeMainFlow.addOverride('jobs.pr.steps.0', {
-  name: 'Checkout',
-  uses: 'actions/checkout@v3',
-  run: `if ! [[ -z \"$\{\{ secrets.PROJEN_GITHUB_TOKEN \}\}\" ]]; then
-  echo "PROJEN_GITHUB_TOKEN exists."
-  echo ::set-output has_token=true
-else
-  echo "PROJEN_GITHUB_TOKEN doesn\'t exist."
-  echo ::set-output has_token=false
-fi`,
-  with: {
-    token: '${{ secrets.PROJEN_GITHUB_TOKEN }}',
-    ref: 'main',
-  },
-});
 project.synth();

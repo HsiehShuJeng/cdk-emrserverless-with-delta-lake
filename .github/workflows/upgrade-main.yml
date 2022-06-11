@@ -15,10 +15,9 @@ jobs:
       patch_created: ${{ steps.create_patch.outputs.patch_created }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: main
-          token: ${{ secrets.PROJEN_GITHUB_TOKEN }}
       - name: Install dependencies
         run: yarn install --check-files --frozen-lockfile
       - name: Upgrade dependencies
@@ -50,14 +49,6 @@ jobs:
         with:
           token: ${{ secrets.PROJEN_GITHUB_TOKEN }}
           ref: main
-        run: |-
-          if ! [[ -z "${{ secrets.PROJEN_GITHUB_TOKEN }}" ]]; then
-            echo "PROJEN_GITHUB_TOKEN exists."
-            echo ::set-output has_token=true
-          else
-            echo "PROJEN_GITHUB_TOKEN doesn't exist."
-            echo ::set-output has_token=false
-          fi
       - name: Download patch
         uses: actions/download-artifact@v3
         with:
