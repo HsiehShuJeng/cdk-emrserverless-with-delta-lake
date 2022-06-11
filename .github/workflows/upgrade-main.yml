@@ -104,5 +104,5 @@ jobs:
 
             *Automatically created by projen via the "upgrade-main" workflow*
           author: github-actions <github-actions@github.com>
-          comitter: github-actions <github-actions@github.com>
+          committer: github-actions <github-actions@github.com>
           signoff: true

@@ -177,7 +177,7 @@ if (customizeUpgradeMainOrNote == true) {
       'labels': 'auto-approve,auto-merge',
       'body': 'Upgrades project dependencies. See details in [workflow run].\n\n[Workflow Run]: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\n\n------\n\n*Automatically created by projen via the "upgrade-main" workflow*',
       'author': 'github-actions <github-actions@github.com>',
-      'comitter': 'github-actions <github-actions@github.com>',
+      'committer': 'github-actions <github-actions@github.com>',
       'signoff': true,
     },
   }]);
