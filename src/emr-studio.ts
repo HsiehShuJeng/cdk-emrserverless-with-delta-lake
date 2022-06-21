@@ -524,7 +524,7 @@ export class EmrStudioTaggingExpert extends Construct {
             effect: iam.Effect.ALLOW,
             actions: ['ec2:CreateTags', 'ec2:DeleteTags'],
             resources: [`arn:${cdk.Aws.PARTITION}:ec2:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:vpc/*`,
-              `arn:${cdk.Aws.PARTITION}:ec2:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:subnet/*`],
+            `arn:${cdk.Aws.PARTITION}:ec2:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:subnet/*`],
           })],
         }),
       },
