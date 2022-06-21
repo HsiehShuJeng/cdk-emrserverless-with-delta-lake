@@ -41,6 +41,7 @@ const project = new projen.awscdk.AwsCdkConstructLibrary({
     'aws-cdk-lib',
     'constructs@^10.1.35',
   ],
+  bundledDeps: ['@types/jest@27.4.1'],
   eslint: true,
   depsUpgradeOptions: {
     workflowOptions: {
