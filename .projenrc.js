@@ -33,7 +33,6 @@ const project = new projen.awscdk.AwsCdkConstructLibrary({
   devDeps: [
     'aws-cdk-lib',
     'constructs@^10.1.35',
-    // '@types/prettier@2.6.0', // for detail, see https://stackoverflow.com/questions/72222305/aws-cdk-2-0-init-app-fails-to-build-with-prettier-issues-which-is-from-jest-sna
     'esbuild',
     'source-map-support',
   ],
@@ -123,4 +122,5 @@ buildWorkFlow.file.addOverride('jobs.build.steps.2', {
   name: 'build',
   run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen build',
 });
+project.package.addPackageResolutions('got@12.3.0');
 project.synth();
