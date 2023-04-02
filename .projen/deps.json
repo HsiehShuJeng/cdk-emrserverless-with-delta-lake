@@ -7,7 +7,7 @@
     },
     {
       "name": "@types/node",
-      "version": "^16",
+      "version": "^14",
       "type": "build"
     },
     {
@@ -52,12 +52,16 @@
     },
     {
       "name": "jest-junit",
-      "version": "^15",
+      "version": "^13",
       "type": "build"
     },
     {
       "name": "jest",
       "version": "^27",
+      "type": "build"
+    },
+    {
+      "name": "jsii",
       "type": "build"
     },
     {
@@ -73,13 +77,12 @@
       "type": "build"
     },
     {
-      "name": "jsii",
-      "version": "1.x",
+      "name": "json-schema",
       "type": "build"
     },
     {
       "name": "npm-check-updates",
-      "version": "^16",
+      "version": "^15",
       "type": "build"
     },
     {
@@ -110,13 +113,13 @@
       "type": "bundled"
     },
     {
-      "name": "@types/babel__traverse",
-      "version": "7.18.2",
+      "name": "@types/prettier",
+      "version": "2.6.0",
       "type": "override"
     },
     {
-      "name": "@types/prettier",
-      "version": "2.6.0",
+      "name": "@types/responselike",
+      "version": "1.0.0",
       "type": "override"
     },
     {
