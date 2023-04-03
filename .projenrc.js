@@ -122,5 +122,7 @@ buildWorkFlow.file.addOverride('jobs.build.steps.2', {
   name: 'build',
   run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen build',
 });
-project.package.addPackageResolutions('got@12.3.0');
+const upgradeMainWorkFlow = project.github.tryFindWorkflow('upgrade-main');
+upgradeMainWorkFlow.file.addOverride('jobs.upgrade.steps.4.uses','actions/upload-artifact@v3')
+// project.package.addPackageResolutions('got@12.3.0');
 project.synth();
