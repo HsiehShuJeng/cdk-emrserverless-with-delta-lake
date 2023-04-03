@@ -36,10 +36,6 @@ const project = new projen.awscdk.AwsCdkConstructLibrary({
     'esbuild',
     'source-map-support',
   ],
-  peerDeps: [
-    'aws-cdk-lib',
-    'constructs@^10.1.35',
-  ],
   bundledDeps: ['@types/jest@27.4.1'],
   eslint: true,
   depsUpgradeOptions: {
@@ -119,8 +115,15 @@ buildWorkFlow.file.addOverride('jobs.build.env', {
   AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}',
 });
 buildWorkFlow.file.addOverride('jobs.build.steps.2', {
+  name: 'Install dependencies',
+  run: 'yarn install --frozen-lockfile',
+});
+buildWorkFlow.file.addOverride('jobs.build.steps.3', {
   name: 'build',
   run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen build',
 });
-project.package.addPackageResolutions('got@12.3.0');
+// const upgradeMainWorkFlow = project.github.tryFindWorkflow('upgrade-main');
+// upgradeMainWorkFlow.file.addOverride('jobs.upgrade.steps.4.uses','actions/upload-artifact@v3')
+// project.package.addPackageResolutions('got@12.3.0');
+project.package.addPackageResolutions('@types/jest@^27.4.1');
 project.synth();
