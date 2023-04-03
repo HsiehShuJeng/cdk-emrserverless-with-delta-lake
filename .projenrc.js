@@ -99,14 +99,14 @@ const requiredAwsEnv = {
   AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}',
 };
 
-const releaseSteps = {
+const releaseOverridingSteps = {
   'jobs.release.steps.4': {
     name: 'release',
     run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen release',
   },
 };
 
-const buildSteps = {
+const buildOverridingSteps = {
   'jobs.build.steps.2': {
     name: 'Install dependencies',
     run: 'yarn install --frozen-lockfile',
@@ -117,8 +117,13 @@ const buildSteps = {
   },
 };
 
-setupWorkflow('build', requiredAwsEnv, buildSteps);
-setupWorkflow('release', requiredAwsEnv, releaseSteps);
+const approveOverridingSteps = {
+  'jobs.approve.steps.0.uses': 'hmarr/auto-approve-action@v3.2.1',
+};
+
+setupWorkflow('build', requiredAwsEnv, buildOverridingSteps);
+setupWorkflow('release', requiredAwsEnv, releaseOverridingSteps);
+setupWorkflow('auto-approve', undefined, approveOverridingSteps);
 
 project.package.addPackageResolutions('@types/jest@^27.4.1');
 project.synth();
@@ -141,7 +146,7 @@ function excludeFilesFrom(pjObject, exclusionList) {
  * Set up a GitHub Actions workflow with the specified environment variables and step overrides.
  *
  * @param {string} workflowName - The name of the workflow to configure.
- * @param {Object} envOverrides - An object containing environment variables to override in the workflow.
+ * @param {Object} [envOverrides] - An object containing environment variables to override in the workflow.
  * @param {Object} stepsOverrides - An object where each key is a step identifier (e.g., 'jobs.build.steps.2') and each value is an object containing the step configuration to override.
  */
 function setupWorkflow(workflowName, envOverrides, stepsOverrides) {
@@ -151,5 +156,7 @@ function setupWorkflow(workflowName, envOverrides, stepsOverrides) {
     workflow.file.addOverride(step, override);
   }
 
-  workflow.file.addOverride(`jobs.${workflowName}.env`, envOverrides);
+  if (envOverrides) {
+    workflow.file.addOverride(`jobs.${workflowName}.env`, envOverrides);
+  }
 }
