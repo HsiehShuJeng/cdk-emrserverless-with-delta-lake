@@ -1,6 +1,5 @@
-const { ProjectType } = require('projen');
+const { release } = require('os');
 const projen = require('projen');
-const { GithubCredentials } = require('projen/lib/github');
 
 const project = new projen.awscdk.AwsCdkConstructLibrary({
   author: 'scott.hsieh',
@@ -87,43 +86,74 @@ const javaDemoExclustions = [
   '*.iml',
 ];
 const commonExclusions = ['cdk.context.json', 'yarn-error.log', 'cdk.out', '.cdk.staging', '.DS_Store'];
-project.npmignore.exclude(...commonExclusions);
-project.gitignore.exclude(...commonExclusions);
-project.npmignore.exclude(...mavenExclusions);
-project.gitignore.exclude(...mavenExclusions);
-project.npmignore.exclude(...pythonDemoExclustions);
-project.gitignore.exclude(...pythonDemoExclustions);
-project.npmignore.exclude(...javaDemoExclustions);
-project.gitignore.exclude(...javaDemoExclustions);
-const githubWorkflowRoot = './.github/workflows';
-const releaseWorkflow = project.tryFindFile(
-  `${githubWorkflowRoot}/release.yml`,
-);
-releaseWorkflow.addOverride('jobs.release.env', {
+const exclusionLists = [
+  commonExclusions,
+  mavenExclusions,
+  pythonDemoExclustions,
+  javaDemoExclustions,
+];
+excludeFilesFrom(project, exclusionLists);
+const requiredAwsEnv = {
   AWS_REGION: 'ap-northeast-1',
   AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}',
   AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}',
-});
-releaseWorkflow.addOverride('jobs.release.steps.3', {
-  name: 'release',
-  run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen release',
-});
-const buildWorkFlow = project.github.tryFindWorkflow('build');
-buildWorkFlow.file.addOverride('jobs.build.env', {
-  AWS_REGION: 'ap-northeast-1',
-  AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}',
-  AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}',
-});
-buildWorkFlow.file.addOverride('jobs.build.steps.2', {
-  name: 'Install dependencies',
-  run: 'yarn install --frozen-lockfile',
-});
-buildWorkFlow.file.addOverride('jobs.build.steps.3', {
-  name: 'build',
-  run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen build',
-});
-// const upgradeMainWorkFlow = project.github.tryFindWorkflow('upgrade-main');
-// upgradeMainWorkFlow.file.addOverride('jobs.upgrade.steps.4.uses','actions/upload-artifact@v3')
-// project.package.addPackageResolutions('got@12.3.0');
+};
+
+const releaseSteps = {
+  'jobs.build.steps.3': {
+    name: 'Install dependencies',
+    run: 'yarn install --frozen-lockfile',
+  },
+  'jobs.release.steps.4': {
+    name: 'release',
+    run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen release',
+  },
+};
+
+const buildSteps = {
+  'jobs.build.steps.2': {
+    name: 'Install dependencies',
+    run: 'yarn install --frozen-lockfile',
+  },
+  'jobs.build.steps.3': {
+    name: 'build',
+    run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen build',
+  },
+};
+
+setupWorkflow('release', requiredAwsEnv, releaseSteps);
+setupWorkflow('build', requiredAwsEnv, buildSteps);
+
 project.package.addPackageResolutions('@types/jest@^27.4.1');
 project.synth();
+
+
+/**
+ * Exclude files from the project's .npmignore and .gitignore.
+ *
+ * @param {Object} pjObject - The project object to apply the exclusions.
+ * @param {Array<Array<string>>} exclusionList - An array of arrays, where each inner array contains a list of file patterns to exclude.
+ */
+function excludeFilesFrom(pjObject, exclusionList) {
+  for (const exclusions of exclusionList) {
+    pjObject.npmignore.exclude(...exclusions);
+    pjObject.gitignore.exclude(...exclusions);
+  }
+}
+
+/**
+ * Set up a GitHub Actions workflow with the specified environment variables and step overrides.
+ *
+ * @param {string} workflowName - The name of the workflow to configure.
+ * @param {Object} envOverrides - An object containing environment variables to override in the workflow.
+ * @param {Object} stepsOverrides - An object where each key is a step identifier (e.g., 'jobs.build.steps.2') and each value is an object containing the step configuration to override.
+ */
+function setupWorkflow(workflowName, envOverrides, stepsOverrides) {
+  const workflow = project.github.tryFindWorkflow(workflowName);
+
+  for (const [step, override] of Object.entries(stepsOverrides)) {
+    workflow.file.addOverride(step, override);
+  }
+
+  workflow.file.addOverride(`jobs.${workflowName}.env`, envOverrides);
+}
