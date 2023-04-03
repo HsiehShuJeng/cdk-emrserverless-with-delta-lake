@@ -26,13 +26,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
       - name: build
         run: |-
           export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query 'Account' | tr -d '"')
           export CDK_DEFAULT_REGION=${AWS_REGION}
           npx projen build
-      - name: build
-        run: npx projen build
       - name: Find mutations
         id: self_mutation
         run: |-
