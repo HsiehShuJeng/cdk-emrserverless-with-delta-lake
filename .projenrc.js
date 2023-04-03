@@ -118,8 +118,8 @@ const buildOverridingSteps = {
 };
 
 const approveOverridingSteps = {
-  'jobs.approve.steps.0.uses': 'hmarr/auto-approve-action@v3.2.1'
-}
+  'jobs.approve.steps.0.uses': 'hmarr/auto-approve-action@v3.2.1',
+};
 
 setupWorkflow('build', requiredAwsEnv, buildOverridingSteps);
 setupWorkflow('release', requiredAwsEnv, releaseOverridingSteps);
@@ -156,7 +156,7 @@ function setupWorkflow(workflowName, envOverrides, stepsOverrides) {
     workflow.file.addOverride(step, override);
   }
 
-  if(envOverrides){
+  if (envOverrides) {
     workflow.file.addOverride(`jobs.${workflowName}.env`, envOverrides);
   }
 }
