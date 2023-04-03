@@ -100,10 +100,6 @@ const requiredAwsEnv = {
 };
 
 const releaseSteps = {
-  'jobs.build.steps.3': {
-    name: 'Install dependencies',
-    run: 'yarn install --frozen-lockfile',
-  },
   'jobs.release.steps.4': {
     name: 'release',
     run: 'export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query \'Account\' | tr -d \'"\')\nexport CDK_DEFAULT_REGION=${AWS_REGION}\nnpx projen release',
@@ -121,8 +117,8 @@ const buildSteps = {
   },
 };
 
-setupWorkflow('release', requiredAwsEnv, releaseSteps);
 setupWorkflow('build', requiredAwsEnv, buildSteps);
+setupWorkflow('release', requiredAwsEnv, releaseSteps);
 
 project.package.addPackageResolutions('@types/jest@^27.4.1');
 project.synth();
