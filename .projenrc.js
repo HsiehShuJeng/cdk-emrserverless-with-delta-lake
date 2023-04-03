@@ -90,7 +90,7 @@ const exclusionLists = [
   commonExclusions,
   mavenExclusions,
   pythonDemoExclustions,
-  javaDemoExclustions
+  javaDemoExclustions,
 ];
 excludeFilesFrom(project, exclusionLists);
 const requiredAwsEnv = {
@@ -124,36 +124,36 @@ const buildSteps = {
 setupWorkflow('release', requiredAwsEnv, releaseSteps);
 setupWorkflow('build', requiredAwsEnv, buildSteps);
 
-project.package.addPackageResolutions('@types/jest@^27.4.1')
+project.package.addPackageResolutions('@types/jest@^27.4.1');
 project.synth();
 
 
 /**
  * Exclude files from the project's .npmignore and .gitignore.
- * 
- * @param {Object} project - The project object to apply the exclusions.
+ *
+ * @param {Object} pjObject - The project object to apply the exclusions.
  * @param {Array<Array<string>>} exclusionList - An array of arrays, where each inner array contains a list of file patterns to exclude.
  */
-function excludeFilesFrom(project, exclusionList) {
+function excludeFilesFrom(pjObject, exclusionList) {
   for (const exclusions of exclusionList) {
-    project.npmignore.exclude(...exclusions);
-    project.gitignore.exclude(...exclusions);
+    pjObject.npmignore.exclude(...exclusions);
+    pjObject.gitignore.exclude(...exclusions);
   }
 }
 
 /**
  * Set up a GitHub Actions workflow with the specified environment variables and step overrides.
- * 
+ *
  * @param {string} workflowName - The name of the workflow to configure.
  * @param {Object} envOverrides - An object containing environment variables to override in the workflow.
  * @param {Object} stepsOverrides - An object where each key is a step identifier (e.g., 'jobs.build.steps.2') and each value is an object containing the step configuration to override.
  */
 function setupWorkflow(workflowName, envOverrides, stepsOverrides) {
   const workflow = project.github.tryFindWorkflow(workflowName);
-  
+
   for (const [step, override] of Object.entries(stepsOverrides)) {
     workflow.file.addOverride(step, override);
   }
-  
+
   workflow.file.addOverride(`jobs.${workflowName}.env`, envOverrides);
 }
