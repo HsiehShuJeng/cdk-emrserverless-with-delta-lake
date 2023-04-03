@@ -31,13 +31,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
+      - name: Install dependencies
+        run: yarn install --check-files --frozen-lockfile
       - name: release
         run: |-
           export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query 'Account' | tr -d '"')
           export CDK_DEFAULT_REGION=${AWS_REGION}
           npx projen release
-      - name: release
-        run: npx projen release
       - name: Check for new commits
         id: git_remote
         run: echo "latest_commit=$(git ls-remote origin -h ${{ github.ref }} | cut -f1)" >> $GITHUB_OUTPUT
@@ -258,3 +258,8 @@ jobs:
           GIT_USER_EMAIL: github-actions@github.com
           GITHUB_TOKEN: ${{ secrets.GO_GITHUB_TOKEN }}
         run: npx -p publib@latest publib-golang
+  build:
+    steps:
+      "3":
+        name: Install dependencies
+        run: yarn install --frozen-lockfile
