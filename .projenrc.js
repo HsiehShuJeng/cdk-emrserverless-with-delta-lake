@@ -36,10 +36,6 @@ const project = new projen.awscdk.AwsCdkConstructLibrary({
     'esbuild',
     'source-map-support',
   ],
-  peerDeps: [
-    'aws-cdk-lib',
-    'constructs@^10.1.35',
-  ],
   bundledDeps: ['@types/jest@27.4.1'],
   eslint: true,
   depsUpgradeOptions: {
@@ -129,4 +125,5 @@ buildWorkFlow.file.addOverride('jobs.build.steps.3', {
 // const upgradeMainWorkFlow = project.github.tryFindWorkflow('upgrade-main');
 // upgradeMainWorkFlow.file.addOverride('jobs.upgrade.steps.4.uses','actions/upload-artifact@v3')
 // project.package.addPackageResolutions('got@12.3.0');
+project.package.addPackageResolutions('@types/jest@^27.4.1')
 project.synth();

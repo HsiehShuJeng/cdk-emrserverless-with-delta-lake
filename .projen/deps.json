@@ -115,6 +115,11 @@
       "type": "override"
     },
     {
+      "name": "@types/jest",
+      "version": "^27.4.1",
+      "type": "override"
+    },
+    {
       "name": "@types/prettier",
       "version": "2.6.0",
       "type": "override"
