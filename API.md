@@ -1081,7 +1081,7 @@ If this is a nested stack, this represents its `AWS::CloudFormation::Stack` reso
 
 ---
 
-##### `terminationProtection`<sup>Optional</sup> <a name="terminationProtection" id="cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.property.terminationProtection"></a>
+##### `terminationProtection`<sup>Required</sup> <a name="terminationProtection" id="cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.property.terminationProtection"></a>
 
 ```typescript
 public readonly terminationProtection: boolean;
