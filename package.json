@@ -55,7 +55,7 @@
     "jsii-docgen": "^7.2.9",
     "jsii-pacmak": "^1.97.0",
     "jsii-rosetta": "1.x",
-    "projen": "0.81.1",
+    "projen": "0.81.2",
     "source-map-support": "^0.5.21",
     "standard-version": "^9",
     "ts-jest": "^27",
