@@ -201,15 +201,15 @@ For detail, please refer to [Create AWS CloudFormation templates for Amazon EMR 
 
 ```ts
 const product = new servicecatalog.CloudFormationProduct(this, 'MyFirstProduct', {
-    productName: 'EMR_6.6.0',
-    owner: 'scott.hsieh',
-    description: 'EMR cluster with 6.6.0 version',
-    productVersions: [
-      {
-        productVersionName: 'v1',
-        validateTemplate: true,
-        cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new EmrClusterTemplateStack(this, 'EmrStudio')),
-      },
+   productName: 'EMR_6.6.0',
+   owner: 'scott.hsieh',
+   description: 'EMR cluster with 6.6.0 version',
+   productVersions: [
+     {
+       productVersionName: 'v1',
+       validateTemplate: true,
+       cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new EmrClusterTemplateStack(this, 'EmrStudio')),
+     },
 ],
 });
 ```
@@ -1104,35 +1104,35 @@ new EmrServerless(this, 'EmrServerless');
 
 // custom deployment references
 new EmrServerless(this, 'EmrServerless', {
-    vpcId: 'vpc-idididid',
+   vpcId: 'vpc-idididid',
 });
 
 new EmrServerless(this, 'EmrServerless', {
-    vpcId: 'vpc-idididid',
-    subnetIds: ['subnet-eeeee', 'subnet-fffff']
+   vpcId: 'vpc-idididid',
+   subnetIds: ['subnet-eeeee', 'subnet-fffff']
 });
 
 const myRole = new iam.Role.fromRoleName('MyRole');
 new EmrServerless(this, 'EmrServerless', {
-    serviceCatalogProps: {
-        role: myRole
-    }
+   serviceCatalogProps: {
+       role: myRole
+   }
 });
 
 const myUser = new iam.Role.fromUserName('MyUser');
 new EmrServerless(this, 'EmrServerless', {
-    vpcId: 'vpc-idididid',
-    subnetIds: ['subnet-eeeee', 'subnet-fffff'],
-    serviceCatalogProps: {
-        user: myUser
-    }
+   vpcId: 'vpc-idididid',
+   subnetIds: ['subnet-eeeee', 'subnet-fffff'],
+   serviceCatalogProps: {
+       user: myUser
+   }
 });
 
 const myGroup = new iam.Group.fromGroupName('MyGroup');
 new EmrServerless(this, 'EmrServerless', {
-    serviceCatalogProps: {
-        group: myGroup
-    }
+   serviceCatalogProps: {
+       group: myGroup
+   }
 });
 ```
 
@@ -1388,8 +1388,8 @@ For what Studio can do further, please refer to [Amazon EMR Studio](https://docs
 ```ts
 const workspaceBucket = new WorkSpaceBucket(this, 'EmrStudio');
 const emrStudio = new EmrStudio(this, '', {
-    workSpaceBucket: workspaceBucket,
-    subnetIds: ['subnet1', 'subnet2', 'subnet3']
+   workSpaceBucket: workspaceBucket,
+   subnetIds: ['subnet1', 'subnet2', 'subnet3']
 });
 ```
 
@@ -1808,7 +1808,7 @@ For detail, please refer to [Create an EMR Studio service role](https://docs.aws
 ```ts
 const workSpaceBucket = new WorkSpaceBucket(this, 'WorkSpace');
 const emrStudioServiceRole = new EmrStudioServiceRole(this, 'Service', {
-      workSpaceBucket: workSpaceBucket
+     workSpaceBucket: workSpaceBucket
 });
 ```
 

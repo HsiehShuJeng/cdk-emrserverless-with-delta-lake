@@ -3,7 +3,7 @@ import * as emrserverlss from 'aws-cdk-lib/aws-emrserverless';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
-import { WorkSpaceBucket, EmrServerlessBucket } from './buckets';
+import { EmrServerlessBucket, WorkSpaceBucket } from './buckets';
 import { EmrStudio } from './emr-studio';
 import { EmrStudioDeveloperStackProps } from './emr-studio-cluster-templates';
 

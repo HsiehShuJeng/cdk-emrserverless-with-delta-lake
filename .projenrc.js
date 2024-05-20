@@ -35,6 +35,7 @@ const project = new projen.awscdk.AwsCdkConstructLibrary({
     'esbuild',
     'source-map-support',
   ],
+  jsiiVersion: '5.4.x',
   eslint: true,
   depsUpgradeOptions: {
     workflowOptions: {
