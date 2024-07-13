@@ -119,12 +119,12 @@ Promise me, darling, make advantage on the CloudFormation outputs.  All you need
    # upload script
    aws s3 cp delta-lake-demo.py s3://${SERVERLESS_BUCKET_NAME}/scripts/${DELTA_LAKE_SCRIPT_NAME}.py --profile ${PROFILE_NAME}
    # download jars and upload them
-   DELTA_VERSION="2.2.0"
-   DELTA_LAKE_CORE="delta-core_2.13-${DELTA_VERSION}.jar"
+   DELTA_VERSION="3.0.0"
+   DELTA_LAKE_CORE="delta-spark_2.13-${DELTA_VERSION}.jar"
    DELTA_LAKE_STORAGE="delta-storage-${DELTA_VERSION}.jar"
-   curl https://repo1.maven.org/maven2/io/delta/delta-core_2.13/${DELTA_VERSION}/${DELTA_LAKE_CORE} --output ${DELTA_LAKE_CORE}
+   curl https://repo1.maven.org/maven2/io/delta/delta-spark_2.13/${DELTA_VERSION}/${DELTA_LAKE_CORE} --output ${DELTA_LAKE_CORE}
    curl https://repo1.maven.org/maven2/io/delta/delta-storage/${DELTA_VERSION}/${DELTA_LAKE_STORAGE} --output ${DELTA_LAKE_STORAGE}
-   aws s3 mv ${DELTA_LAKE_CORE} s3://${SERVERLESS_BUCKET_NAME}/jars/${${DELTA_LAKE_CORE}} --profile ${PROFILE_NAME}
+   aws s3 mv ${DELTA_LAKE_CORE} s3://${SERVERLESS_BUCKET_NAME}/jars/${DELTA_LAKE_CORE} --profile ${PROFILE_NAME}
    aws s3 mv ${DELTA_LAKE_STORAGE} s3://${SERVERLESS_BUCKET_NAME}/jars/${DELTA_LAKE_STORAGE} --profile ${PROFILE_NAME}
    ```  
 # Create an EMR Serverless app  
@@ -138,7 +138,7 @@ aws emr-serverless start-job-run \
   --job-driver '{
         "sparkSubmit": {
             "entryPoint": "s3://'${SERVERLESS_BUCKET_NAME}'/scripts/'${DELTA_LAKE_SCRIPT_NAME}'.py",
-            "sparkSubmitParameters": "--conf spark.executor.cores=1 --conf spark.executor.memory=4g --conf spark.driver.cores=1 --conf spark.driver.memory=4g --conf spark.executor.instances=1 --conf spark.jars=s3://'${SERVERLESS_BUCKET_NAME}'/jars/delta-core_2.12-1.2.0.jar,s3://'${SERVERLESS_BUCKET_NAME}'/jars/delta-storage-1.2.0.jar"
+            "sparkSubmitParameters": "--conf spark.executor.cores=1 --conf spark.executor.memory=4g --conf spark.driver.cores=1 --conf spark.driver.memory=4g --conf spark.executor.instances=1 --conf spark.jars=s3://'${SERVERLESS_BUCKET_NAME}'/jars/'${DELTA_LAKE_CORE}',s3://'${SERVERLESS_BUCKET_NAME}'/jars/'${DELTA_LAKE_STORAGE}'"
         }
     }' \
   --configuration-overrides '{

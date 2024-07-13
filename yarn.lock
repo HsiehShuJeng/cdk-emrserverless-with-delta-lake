@@ -1245,7 +1245,7 @@ available-typed-arrays@^1.0.7:
   dependencies:
     possible-typed-array-names "^1.0.0"
 
-aws-cdk-lib@^2.93.0:
+aws-cdk-lib@^2.149.0:
   version "2.149.0"
   resolved "https://registry.yarnpkg.com/aws-cdk-lib/-/aws-cdk-lib-2.149.0.tgz#5f13a6b2c222f6a1db66be6a58129a67845bf6e8"
   integrity sha512-bmbgnF2dEYlsZlVaNoSfcjyIUirnvmsvNXJwBMmUCZn2IZ+YWvkMv+rr4e/GO3gPKrdNzew1jNVvHSYxlun6rA==
@@ -5272,9 +5272,9 @@ typescript@^4.9.5:
   integrity sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==
 
 typescript@next:
-  version "5.6.0-dev.20240712"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.6.0-dev.20240712.tgz#85ccc65418bc2f0e31a4eec4ac6f1aa013e4e649"
-  integrity sha512-8Iu/vFdWrjtqSm31Dcp4rFgybCNdjMJVZFoWF6PlzEYE6M6eiA+TeKGgygspCbnErrBRjHgWrEMdP3LavHtQ+w==
+  version "5.6.0-dev.20240713"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.6.0-dev.20240713.tgz#d1380cb032f3cea2bbd0caa58f77016bbc0bcad8"
+  integrity sha512-J+4LjdEKAKO95oQ2Ff870vHVxa57ZMVSbfpyL0L5daYrnu48lQiMsXNDiG9IPT2RWF221Qt+LGxjug74XbeseQ==
 
 typescript@~3.9.10:
   version "3.9.10"

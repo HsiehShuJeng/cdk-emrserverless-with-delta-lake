@@ -82,7 +82,7 @@ export class EmrServerless extends Construct {
     new ServerlessJobRole(this, 'ExecutionJob', { emrServerlessBucket: emrServerlessBucket.bucketEntity });
     const serverlessApplication = new emrserverlss.CfnApplication(this, 'application', {
       name: 'Emr-Serverless-Quick-Launch-Application',
-      releaseLabel: 'emr-6.6.0',
+      releaseLabel: 'emr-7.1.0',
       type: 'Spark',
       initialCapacity: [
         {

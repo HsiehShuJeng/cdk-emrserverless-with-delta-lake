@@ -138,32 +138,30 @@ export class EmrClusterTemplateStack extends servicecatalog.ProductStack {
     });
     const emrRelease = new cdk.CfnParameter(this, 'EmrRelease', {
       type: 'String',
-      default: 'emr-6.6.0',
-      allowedValues: ['emr-6.6.0',
-        'emr-6.5.0',
-        'emr-6.4.0',
-        'emr-6.3.1',
-        'emr-6.2.1',
-        'emr-6.2.0'],
+      default: 'emr-7.1.0',
+      allowedValues: [
+        'emr-7.1.0',
+        'emr-7.0.0',
+      ],
     });
     const masterInstanceType = new cdk.CfnParameter(this, 'MasterInstanceType', {
       type: 'String',
-      default: 'c5.xlarge',
+      default: 'c7g.xlarge',
       allowedValues: [
-        'm5.xlarge',
-        'm5.2xlarge',
-        'c5.xlarge',
-        'c5.2xlage',
+        'm7g.xlarge',
+        'm7g.2xlarge',
+        'c7g.xlarge',
+        'c7g.2xlarge',
       ],
     });
     const coreInstanceType = new cdk.CfnParameter(this, 'CoreInstanceType', {
       type: 'String',
-      default: 'c5.xlarge',
+      default: 'c7g.xlarge',
       allowedValues: [
-        'm5.xlarge',
-        'm5.2xlarge',
-        'c5.xlarge',
-        'c5.2xlage',
+        'm7g.xlarge',
+        'm7g.2xlarge',
+        'c7g.xlarge',
+        'c7g.2xlarge',
       ],
     });
     const clusterTemplate = new emr.CfnCluster(this, 'TemplateCluster', {
