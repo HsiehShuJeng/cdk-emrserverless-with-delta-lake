@@ -124,7 +124,7 @@ Promise me, darling, make advantage on the CloudFormation outputs.  All you need
    DELTA_LAKE_STORAGE="delta-storage-${DELTA_VERSION}.jar"
    curl https://repo1.maven.org/maven2/io/delta/delta-spark_2.13/${DELTA_VERSION}/${DELTA_LAKE_CORE} --output ${DELTA_LAKE_CORE}
    curl https://repo1.maven.org/maven2/io/delta/delta-storage/${DELTA_VERSION}/${DELTA_LAKE_STORAGE} --output ${DELTA_LAKE_STORAGE}
-   aws s3 mv ${DELTA_LAKE_CORE} s3://${SERVERLESS_BUCKET_NAME}/jars/${${DELTA_LAKE_CORE}} --profile ${PROFILE_NAME}
+   aws s3 mv ${DELTA_LAKE_CORE} s3://${SERVERLESS_BUCKET_NAME}/jars/${DELTA_LAKE_CORE} --profile ${PROFILE_NAME}
    aws s3 mv ${DELTA_LAKE_STORAGE} s3://${SERVERLESS_BUCKET_NAME}/jars/${DELTA_LAKE_STORAGE} --profile ${PROFILE_NAME}
    ```
 # Create an EMR Serverless app
