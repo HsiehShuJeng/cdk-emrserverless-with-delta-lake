@@ -60,7 +60,7 @@ new EmrClusterTemplateStack(scope: Construct, id: string)
 | --- | --- |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.toString">toString</a></code> | Returns a string representation of this construct. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.addDependency">addDependency</a></code> | Add a dependency between this stack and another stack. |
-| <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.addMetadata">addMetadata</a></code> | Adds an arbitary key-value pair, with information you want to record about the stack. |
+| <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.addMetadata">addMetadata</a></code> | Adds an arbitrary key-value pair, with information you want to record about the stack. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.addTransform">addTransform</a></code> | Add a Transform to this stack. A Transform is a macro that AWS CloudFormation uses to process your template. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.exportStringListValue">exportStringListValue</a></code> | Create a CloudFormation Export for a string list value. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.exportValue">exportValue</a></code> | Create a CloudFormation Export for a string value. |
@@ -113,7 +113,7 @@ app, and also supports nested stacks.
 public addMetadata(key: string, value: any): void
 ```
 
-Adds an arbitary key-value pair, with information you want to record about the stack.
+Adds an arbitrary key-value pair, with information you want to record about the stack.
 
 These get translated to the Metadata section of the generated template.
 
