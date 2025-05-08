@@ -21,7 +21,7 @@ export enum StudioAuthMode {
   /**
                                                          * the Studio authenticates users using AWS IAM.
                                                          */
-  AWS_IAM = 'IAM'
+  AWS_IAM = 'IAM',
 }
 
 /**
