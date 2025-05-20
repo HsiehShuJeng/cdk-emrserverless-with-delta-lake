@@ -1337,9 +1337,9 @@ available-typed-arrays@^1.0.7:
     possible-typed-array-names "^1.0.0"
 
 aws-cdk-lib@^2.149.0:
-  version "2.196.0"
-  resolved "https://registry.yarnpkg.com/aws-cdk-lib/-/aws-cdk-lib-2.196.0.tgz#fd442256ecb0b31e77a1599a78c4d8c8132f881e"
-  integrity sha512-CAy0ahDpUHuYArP0vhDrOZ9OUSyRAznCcKcbETJOPr438QZUCyv+tRVgk8VP5lFW1JuV9sNzIvxdZcsNVSCF7g==
+  version "2.196.1"
+  resolved "https://registry.yarnpkg.com/aws-cdk-lib/-/aws-cdk-lib-2.196.1.tgz#6bdf40ed62b802525f9b35a3f9f23068771cfb63"
+  integrity sha512-OsJ0luDUnagbJpd5Uweh+/6L7OLZQZB7EV9pD9i23uJF6uoe4M02T+kg67huxZdVJVJTZK6De4QxazlB2/mO6A==
   dependencies:
     "@aws-cdk/asset-awscli-v1" "2.2.236"
     "@aws-cdk/asset-node-proxy-agent-v6" "^2.1.0"
@@ -5693,9 +5693,9 @@ typescript@^4.9.5:
   integrity sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==
 
 typescript@next:
-  version "5.9.0-dev.20250518"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.9.0-dev.20250518.tgz#db3133ff9e12d0c28d8f98489208625dfe8e1f6d"
-  integrity sha512-P5dLYqx/0cg+0rSY73eeefpJupEHrlmn57OSKVpYgaewd59MAlq7JWuP3719I9CgM3VIyRN6kSX2w8DEry2V8A==
+  version "5.9.0-dev.20250519"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.9.0-dev.20250519.tgz#546ff858894f720a647a61e5e354669df138cf71"
+  integrity sha512-cD9QL1mE9TWmUaC8hHGQUXS0oRsZI45Sovemi6S8ATHu2yKIxUtrlpXkMPQFD5g92QT7SSbNWuR8k6iMIHC/6A==
 
 typescript@~5.4:
   version "5.4.5"
