@@ -61,12 +61,14 @@ new EmrClusterTemplateStack(scope: Construct, id: string)
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.toString">toString</a></code> | Returns a string representation of this construct. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.addDependency">addDependency</a></code> | Add a dependency between this stack and another stack. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.addMetadata">addMetadata</a></code> | Adds an arbitrary key-value pair, with information you want to record about the stack. |
+| <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.addStackTag">addStackTag</a></code> | Configure a stack tag. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.addTransform">addTransform</a></code> | Add a Transform to this stack. A Transform is a macro that AWS CloudFormation uses to process your template. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.exportStringListValue">exportStringListValue</a></code> | Create a CloudFormation Export for a string list value. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.exportValue">exportValue</a></code> | Create a CloudFormation Export for a string value. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.formatArn">formatArn</a></code> | Creates an ARN from components. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.getLogicalId">getLogicalId</a></code> | Allocates a stack-unique CloudFormation-compatible logical identity for a specific resource. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.regionalFact">regionalFact</a></code> | Look up a fact value for the given fact for the region of this stack. |
+| <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.removeStackTag">removeStackTag</a></code> | Remove a stack tag. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.renameLogicalId">renameLogicalId</a></code> | Rename a generated logical identities. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.reportMissingContextKey">reportMissingContextKey</a></code> | Indicate that a context key was expected. |
 | <code><a href="#cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.resolve">resolve</a></code> | Resolve a tokenized value in the context of the current stack. |
@@ -128,6 +130,28 @@ These get translated to the Metadata section of the generated template.
 ###### `value`<sup>Required</sup> <a name="value" id="cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.addMetadata.parameter.value"></a>
 
 - *Type:* any
+
+---
+
+##### `addStackTag` <a name="addStackTag" id="cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.addStackTag"></a>
+
+```typescript
+public addStackTag(tagName: string, tagValue: string): void
+```
+
+Configure a stack tag.
+
+At deploy time, CloudFormation will automatically apply all stack tags to all resources in the stack.
+
+###### `tagName`<sup>Required</sup> <a name="tagName" id="cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.addStackTag.parameter.tagName"></a>
+
+- *Type:* string
+
+---
+
+###### `tagValue`<sup>Required</sup> <a name="tagValue" id="cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.addStackTag.parameter.tagValue"></a>
+
+- *Type:* string
 
 ---
 
@@ -342,6 +366,22 @@ the given region.
 ---
 
 ###### `defaultValue`<sup>Optional</sup> <a name="defaultValue" id="cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.regionalFact.parameter.defaultValue"></a>
+
+- *Type:* string
+
+---
+
+##### `removeStackTag` <a name="removeStackTag" id="cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.removeStackTag"></a>
+
+```typescript
+public removeStackTag(tagName: string): void
+```
+
+Remove a stack tag.
+
+At deploy time, CloudFormation will automatically apply all stack tags to all resources in the stack.
+
+###### `tagName`<sup>Required</sup> <a name="tagName" id="cdk-emrserverless-with-delta-lake.EmrClusterTemplateStack.removeStackTag.parameter.tagName"></a>
 
 - *Type:* string
 
